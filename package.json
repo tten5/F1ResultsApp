@@ -1,5 +1,5 @@
 {
-  "name": "f1resultapp",
+  "name": "f1resultsapp",
   "version": "1.0.0",
   "description": "app to show results of f1 races",
   "main": "index.js",
