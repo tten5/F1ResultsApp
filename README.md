@@ -3,6 +3,7 @@ Web application to show results from F1 races
 
 # Prerequisite
 - Node.js v18.16.1 
+- npm 9.5.1
 
 ## How to run 
 ```
