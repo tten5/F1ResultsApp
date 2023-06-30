@@ -74,7 +74,30 @@ export default {
                     $ref: '#/components/schemas/Driver'
                 },
             },
-            // error model
+            // Team model
+            t_name: {
+                type: 'string',
+                example: 'Mercedes'
+            },          
+            Team: {
+                type: "object",
+                properties: {
+                    _id: {
+                        $ref: '#/components/schemas/id'
+                    },
+                    t_name: {
+                        $ref: '#/components/schemas/t_name'
+                    }
+                },
+            },
+            TeamList: {
+                type: "array", 
+                description: "an array of teams",
+                items: {
+                    $ref: '#/components/schemas/Team'
+                },
+            },
+            // Error model
             Error: {
                 type: "object", //data type
                 properties: {

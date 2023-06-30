@@ -5,6 +5,9 @@ export default {
 		},
 		{
 			name: "driver-operations",
+		},
+		{
+			name: "team-operations",
 		}
 	],
 };

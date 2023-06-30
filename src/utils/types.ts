@@ -18,3 +18,18 @@ export interface resGetALL extends resFormat{
 export interface resGetOne extends resFormat{
     target: validTarget
 }
+
+export interface driverSearchParam {
+    driverName: string;
+    ranking: boolean;
+}
+
+export interface teamSearchParam {
+    teamName: string;
+    ranking: boolean;
+}
+
+export interface grandprixSearchParam {
+    grandprixPlace: string;
+    winners: boolean;
+}

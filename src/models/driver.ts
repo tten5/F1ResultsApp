@@ -8,7 +8,7 @@ export interface IDriver {
 
 // Create a Schema corresponding to the document interface.
 const driverSchema = new Schema<IDriver>({
-    name: { type: String, required: true },
+    name: { type: String, required: true, index: true },
     nationality: {type: String, required: true }
 });
 

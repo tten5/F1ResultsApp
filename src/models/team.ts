@@ -7,7 +7,7 @@ export interface ITeam {
 
 // Create a Schema corresponding to the document interface.
 const teamSchema = new Schema<ITeam>({
-    t_name: { type: String, required: true },
+    t_name: { type: String, required: true, index: true },
 });
 
 // Create a Model.
