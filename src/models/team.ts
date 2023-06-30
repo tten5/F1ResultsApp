@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 // Create an interface representing a document in MongoDB.
-interface ITeam {
+export interface ITeam {
     t_name: string;
 }
 
@@ -11,4 +11,4 @@ const teamSchema = new Schema<ITeam>({
 });
 
 // Create a Model.
-export default model<ITeam>('Team', teamSchema);
+export const Team = model<ITeam>('Team', teamSchema);

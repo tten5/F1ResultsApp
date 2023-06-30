@@ -1,7 +1,7 @@
 import { Schema, Types, model } from 'mongoose';
 
 // Create an interface representing a document in MongoDB.
-interface IParticipation {
+export interface IParticipation {
     gp_id: Types.ObjectId;
     driver_id: Types.ObjectId;
     team_id: Types.ObjectId;
@@ -32,4 +32,4 @@ const participationSchema = new Schema<IParticipation>({
 });
 
 // Create a Model.
-export default model<IParticipation>('Participation', participationSchema);
+export const Participation = model<IParticipation>('Participation', participationSchema);
