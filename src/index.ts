@@ -5,6 +5,7 @@ import path from "path";
 
 // import routes
 import grandprixRoutes from './routes/grandprix';
+import driverRoutes from './routes/driver';
 
 // for auto documentation 
 import swaggerUi from 'swagger-ui-express';
@@ -28,6 +29,8 @@ app.get("/healthcheck", (req: Request, res: Response) => {
 });
 
 app.use('/api/v1/grandprix', grandprixRoutes)
+app.use('/api/v1/drivers', driverRoutes)
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 
 //handling all other request to any route that is not available 
