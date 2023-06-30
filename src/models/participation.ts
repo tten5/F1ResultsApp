@@ -1,4 +1,5 @@
 import { Schema, Types, model } from 'mongoose';
+import { config } from '../config';
 
 // Create an interface representing a document in MongoDB.
 export interface IParticipation {
@@ -9,6 +10,7 @@ export interface IParticipation {
     laps: number;
     pos: string;
     points: number;
+    year: number;
 }
 
 // Create a Schema corresponding to the document interface.
@@ -28,8 +30,10 @@ const participationSchema = new Schema<IParticipation>({
     time: { type: String, required: true },
     laps: { type: Number, required: true },
     pos: { type: String, required: true },
-    points: { type: Number, required: true }
-});
+    points: { type: Number, required: true },
+    year: { type: Number, required: true }
+},
+    { collection: config.db.participationColl });
 
 // Create a Model.
 export const Participation = model<IParticipation>('Participation', participationSchema);

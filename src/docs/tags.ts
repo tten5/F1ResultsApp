@@ -8,6 +8,9 @@ export default {
 		},
 		{
 			name: "team-operations",
+		},
+		{
+			name: "participation-operations",
 		}
 	],
 };
