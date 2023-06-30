@@ -1,7 +1,7 @@
 import { Schema, Types, model } from 'mongoose';
 
 // Create an interface representing a document in MongoDB.
-interface IUser {
+export interface IUser {
     username: string;
     password: string;
     favDrivers: Types.ObjectId[];
@@ -10,7 +10,7 @@ interface IUser {
 // Create a Schema corresponding to the document interface.
 const userSchema = new Schema<IUser>({
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true, unique: true },
+    password: { type: String, required: true},
     favDrivers: [
         {
             type: Schema.Types.ObjectId,
@@ -20,4 +20,4 @@ const userSchema = new Schema<IUser>({
 });
 
 // Create a Model.
-export default model<IUser>('User', userSchema);
+export const User = model<IUser>('User', userSchema);
