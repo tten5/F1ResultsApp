@@ -1,7 +1,10 @@
 export default {
-    tags: [
-      {
-        name: "grandprix-operations", 
-      },
-    ],
-  };
+	tags: [
+		{
+			name: "grandprix-operations",
+		},
+		{
+			name: "driver-operations",
+		}
+	],
+};

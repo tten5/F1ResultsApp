@@ -31,7 +31,7 @@ export const getOneGPHandler = async (req: Request, res: Response) => {
     try {
         const grandprix = await GrandPrix.findById(req.params.id)
         if (!grandprix) {
-            return res.status(400).json({ message: "grandprix not found" })
+            return res.status(404).json({ message: "grandprix not found" })
         }
         const msg : resGetOne = { message: "successfully get grandprix", target: grandprix}
         return res.status(200).json(msg)    

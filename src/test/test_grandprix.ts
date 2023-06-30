@@ -19,13 +19,13 @@ describe('Grand Prix API', () => {
             assert.strictEqual(response.data.target._id, grandPrixId);
         });
 
-        it('should return 400 if grand prix not found', async () => {
+        it('should return 404 if grand prix not found', async () => {
             try {
                 const nonExistentId = '649d3c55e81209641c7096c3'; // Replace with a non-existent grand prix id
                 await requestInstance.get(`/grandprix/${nonExistentId}`);
             }
             catch(err:any) {
-                assert.strictEqual(err.response.status, 400);
+                assert.strictEqual(err.response.status, 404);
                 assert.strictEqual(err.response.data.message, 'grandprix not found');
                 return
             }

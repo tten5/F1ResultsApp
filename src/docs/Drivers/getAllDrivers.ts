@@ -1,36 +1,26 @@
 export default {
     // method of operation
     get: {
-        tags: ["grandprix-operations"], 
-        description: "Get one grandprix", 
-        operationId: "getOneGrandPrix", 
-        parameters: [
-            {
-                name: "id", 
-                in: "path", 
-                schema: {
-                  $ref: "#/components/schemas/id", 
-                },
-                required: true, 
-                description: "A single grandprix id",
-            },
-        ], 
+        tags: ["driver-operations"], 
+        description: "Get all drivers", 
+        operationId: "getAllDriver", 
+        parameters: [], 
         // expected responses
         responses: {
             200: {
-                description: "Received specified grandprix successfully", 
+                description: "Received all drivers successfully", 
                 content: {
                     // content-type
                     "application/json": {
                         schema: {
-                            $ref: '#/components/schemas/GrandPrix', 
+                            $ref: '#/components/schemas/DriverList', 
                         },
                     },
                 },
             },
             // response code
             404: {
-                description: "GrandPrix not found", // response desc.
+                description: "DriverList not found", // response desc.
                 content: {
                     // content-type
                     "application/json": {
@@ -41,7 +31,7 @@ export default {
                 },
             },
             500: {
-                description: "Internal errors", // response desc.
+                description: "Internal error", // response desc.
                 content: {
                     // content-type
                     "application/json": {

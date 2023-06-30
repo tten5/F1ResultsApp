@@ -1,8 +1,9 @@
-import grandprix from './GrandPrix'
-
+import Grandprix from './GrandPrix'
+import Drivers from './Drivers'
 
 export default {
     paths: {
-        ...grandprix
+        ...Grandprix,
+        ...Drivers
     }
 }
