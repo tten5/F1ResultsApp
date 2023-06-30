@@ -78,7 +78,7 @@ export default {
             t_name: {
                 type: 'string',
                 example: 'Mercedes'
-            },          
+            },
             Team: {
                 type: "object",
                 properties: {
@@ -91,10 +91,67 @@ export default {
                 },
             },
             TeamList: {
-                type: "array", 
+                type: "array",
                 description: "an array of teams",
                 items: {
                     $ref: '#/components/schemas/Team'
+                },
+            },
+            // Participation model
+            time: {
+                type: "string",
+                example: "1:32:58.710"
+            },
+            laps: {
+                type: "number",
+                example: 57
+            },
+            pos: {
+                type: "string",
+                example: "2"
+            },
+            points: {
+                type: "number",
+                example: 25
+            },
+            Participation: {
+                type: "object",
+                properties: {
+                    _id: {
+                        $ref: '#/components/schemas/id'
+                    },
+                    gp_id: {
+                        $ref: '#/components/schemas/id'
+                    },
+                    driver_id: {
+                        $ref: '#/components/schemas/id'
+                    },
+                    team_id: {
+                        $ref: '#/components/schemas/id'
+                    },
+                    year: {
+                        $ref: '#/components/schemas/year'
+                    },
+                    time: {
+                        $ref: '#/components/schemas/time'
+                    },
+
+                    laps: {
+                        $ref: '#/components/schemas/laps'
+                    },
+                    pos: {
+                        $ref: '#/components/schemas/pos'
+                    },
+                    points: {
+                        $ref: '#/components/schemas/points'
+                    },
+                },
+            },
+            ParticipationList: {
+                type: "array", 
+                description: "an array of participation",
+                items: {
+                    $ref: '#/components/schemas/Participation'
                 },
             },
             // Error model
