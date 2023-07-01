@@ -32,4 +32,26 @@ describe('Grand Prix API', () => {
             throw `Should throw error but did not`
         });
     });
+
+    describe('GET /grandprix/year/:year', () => {
+        it('should return all grandprix in 1 year', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/grandprix/year/${year}`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].year, year);
+        });
+        it('should return 404 if grandprix of invalid year', async () => {
+            try {
+                const response = await requestInstance.get(`/grandprix/year/2012`);            
+            }
+            catch (err: any) {
+                assert.strictEqual(err.response.status, 404);
+                assert.strictEqual(err.response.data.message, 'there is no grandprix in that year');
+                return
+            }
+            throw `Should throw error but did not`
+        });
+    });
 });

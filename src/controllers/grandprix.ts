@@ -43,3 +43,31 @@ export const getOneGPHandler = async (req: Request, res: Response) => {
         return res.status(500).json(msg)
     }
 }
+
+/**
+ * get all grandprix in 1 year
+ */
+export const getGPByYearHandler = async (req: Request, res: Response) => {
+    try {
+        const grandprixList = await GrandPrix.find({year: req.params.year})
+        if (grandprixList.length == 0) {
+            const msg: resFormat = {
+                message: "there is no grandprix in that year",
+            }
+            return res.status(404).json(msg)
+        }
+        
+        const msg: resGetALL = {
+            message: "successfully get all grandprix in 1 year",
+            list: grandprixList
+        }
+        
+        return res.status(200).json(msg)
+    }
+    catch(err) {
+        console.log("get grandprix list in 1 year error")
+        console.log(err)
+        const msg : resFormat = {message: "get grandprix in 1 year fail"}
+        return res.status(500).json(msg)
+    }
+}

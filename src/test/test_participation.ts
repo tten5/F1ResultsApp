@@ -9,6 +9,8 @@ describe('Participation API', () => {
             assert.strictEqual(response.status, 200);
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].gp_id, grandprixId);
+
         });
         it('should return 404 if participation of invalid grand prix', async () => {
             try {
@@ -34,6 +36,8 @@ describe('Participation API', () => {
             assert.strictEqual(response.status, 200);
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].driver_id, driverId);
+            assert.strictEqual(response.data.list[0].year, year);
         });
         it('should return 404 if participation of invalid driver id with valid year', async () => {
             try {
@@ -63,7 +67,6 @@ describe('Participation API', () => {
     });
 
 
-
     describe('GET /participation/team/:id/:year', () => {
         it('should return all participation of 1 team in 1 year', async () => {
             const teamId = '649d42fb8f9d812c3201f569'
@@ -72,6 +75,8 @@ describe('Participation API', () => {
             assert.strictEqual(response.status, 200);
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].team_id, teamId);
+            assert.strictEqual(response.data.list[0].year, year);
         });
         it('should return 404 if participation of invalid team id with valid year', async () => {
             try {

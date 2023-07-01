@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import requestInstance from './client';
+import { Participation } from '../models/participation';
 
 describe('Driver API', () => {
     describe('GET /drivers', () => {
@@ -27,6 +28,29 @@ describe('Driver API', () => {
             catch(err:any) {
                 assert.strictEqual(err.response.status, 404);
                 assert.strictEqual(err.response.data.message, 'driver not found');
+                return
+            }
+            throw `Should throw error but did not`
+        });
+    });
+
+    describe('GET /drivers/year/:year', () => {
+        it('should return all drivers in 1 year', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/drivers/year/${year}`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            const testParticipation = await requestInstance.get(`/participation/driver/${response.data.list[0]._id}/${year}`);
+            assert.isAbove(testParticipation.data.list.length, 0);
+        });
+        it('should return 404 if driver of invalid year', async () => {
+            try {
+                const response = await requestInstance.get(`/drivers/year/2012`);            
+            }
+            catch (err: any) {
+                assert.strictEqual(err.response.status, 404);
+                assert.strictEqual(err.response.data.message, 'there is no driver in that year');
                 return
             }
             throw `Should throw error but did not`
