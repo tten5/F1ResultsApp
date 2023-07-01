@@ -45,9 +45,13 @@ export default {
                 },
             },
             // Driver model
-            name: {
+            firstname: {
                 type: 'string',
-                example: 'Lewis Hamilton'
+                example: 'lewis'
+            },
+            lastname: {
+                type: 'string',
+                example: 'hamilton'
             },
             nationality: {
                 type: 'string',
@@ -59,8 +63,11 @@ export default {
                     _id: {
                         $ref: '#/components/schemas/id'
                     },
-                    name: {
-                        $ref: '#/components/schemas/name'
+                    firstname: {
+                        $ref: '#/components/schemas/firstname'
+                    },
+                    lastname: {
+                        $ref: '#/components/schemas/lastname'
                     },
                     nationality: {
                         $ref: '#/components/schemas/nationality'

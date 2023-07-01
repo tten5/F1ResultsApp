@@ -2,7 +2,7 @@ export default {
     // method of operation
     get: {
         tags: ["team-operations"], 
-        description: "Get all teams", 
+        description: "Get all teams and return in team_name order", 
         operationId: "getAllTeam", 
         parameters: [], 
         // expected responses

@@ -14,6 +14,14 @@ export default {
                 required: true, 
                 description: "the year that the grandprix is held",
             },
+            {
+                name: "sort", 
+                in: "query", 
+                schema: {
+                    type: "string"
+                },
+                description: "default sort is by date, indicate sort by place by using sort=place",
+            },
         ], 
         // expected responses
         responses: {

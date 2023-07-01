@@ -10,11 +10,29 @@ describe('Driver API', () => {
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
         });
+        it('should return driver list in firstname order when sort=firstname', async () => {
+            const response = await requestInstance.get(`/drivers?sort=firstname`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            for (let i = 1; i < response.data.list.length; i++) {
+              assert.ok(response.data.list[i].firstname >= response.data.list[i - 1].firstname, 'Driver list is not in firstname order');
+            }
+        });
+        it('should return driver list in lastname order when sort is not firstname', async () => {
+            const response = await requestInstance.get(`/drivers?sort=what`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            for (let i = 1; i < response.data.list.length; i++) {
+              assert.ok(response.data.list[i].lastname >= response.data.list[i - 1].lastname, 'Driver list are not in lastname order');
+            }
+        });
     });
 
     describe('GET /drivers/:id', () => {
         it('should return a specific driver', async () => {
-            const driverId = '649d4ddb61c89321f5d7ebe3';
+            const driverId = '649ff5b00a1a8712625a720b';
             const response = await requestInstance.get(`/drivers/${driverId}`);
             assert.strictEqual(response.status, 200);
             assert.strictEqual(response.data.target._id, driverId);
@@ -22,7 +40,7 @@ describe('Driver API', () => {
 
         it('should return 404 if driver not found', async () => {
             try {
-                const nonExistentId = '649d3c55e81209641c7096c3'; // Replace with a non-existent driver id
+                const nonExistentId = '649ff5b00a1a8712625a710b'; // Replace with a non-existent driver id
                 await requestInstance.get(`/drivers/${nonExistentId}`);
             }
             catch(err:any) {
@@ -34,7 +52,7 @@ describe('Driver API', () => {
         });
     });
 
-    describe('GET /drivers/year/:year', () => {
+    describe('GET /drivers/year/:year&sort=', () => {
         it('should return all drivers in 1 year', async () => {
             const year = 2014
             const response = await requestInstance.get(`/drivers/year/${year}`);
@@ -54,6 +72,26 @@ describe('Driver API', () => {
                 return
             }
             throw `Should throw error but did not`
+        });
+        it('should return drivers in 1 year in firstname order when sort=firstname', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/drivers/year/${year}?sort=firstname`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            for (let i = 1; i < response.data.list.length; i++) {
+              assert.ok(response.data.list[i].firstname >= response.data.list[i - 1].firstname, 'Driver list is not in firstname order');
+            }
+        });
+        it('should return drivers in 1 year in lastname order when sort is not firstname', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/drivers/year/${year}?sort=what`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            for (let i = 1; i < response.data.list.length; i++) {
+              assert.ok(response.data.list[i].lastname >= response.data.list[i - 1].lastname, 'Driver list are not in lastname order');
+            }
         });
     });
 });

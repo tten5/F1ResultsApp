@@ -2,9 +2,18 @@ export default {
     // method of operation
     get: {
         tags: ["driver-operations"], 
-        description: "Get all drivers", 
+        description: "Get all drivers and return in place order", 
         operationId: "getAllDriver", 
-        parameters: [], 
+        parameters: [
+            {
+                name: "sort", 
+                in: "query", 
+                schema: {
+                    type: "string"
+                },
+                description: "default sort is by lastname, indicate sort by alphabet by using sort=firstname",
+            },
+        ], 
         // expected responses
         responses: {
             200: {

@@ -14,6 +14,14 @@ export default {
                 required: true, 
                 description: "the year that the drivers participated in",
             },
+            {
+                name: "sort", 
+                in: "query", 
+                schema: {
+                    type: "string"
+                },
+                description: "default sort is by lastname, indicate sort by alphabet by using sort=firstname",
+            },
         ], 
         // expected responses
         responses: {

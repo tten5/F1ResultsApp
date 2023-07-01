@@ -7,7 +7,7 @@ export default {
         ...getAllGrandPrix,
     },
     '/api/v1/grandprix/year/{year}': {
-        ...getAllGrandPrix,
+        ...getGPByYear,
     },
     '/api/v1/grandprix/{id}': {
         ...getOneGrandPrix,

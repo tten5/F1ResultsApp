@@ -48,7 +48,7 @@ export const getOneTeamHandler = async (req: Request, res: Response) => {
 
 
 /**
- * get all team in 1 year
+ * get all team in 1 year and return in alphabet order
  */
 export const getTeamsByYearHandler = async (req: Request, res: Response) => {
     try {
@@ -61,7 +61,7 @@ export const getTeamsByYearHandler = async (req: Request, res: Response) => {
             return res.status(404).json(msg)
         }
 
-        const teamList = await Team.find({ _id: { $in: teamIdList }})        
+        const teamList = await Team.find({ _id: { $in: teamIdList }}).sort({t_name: 1})        
         if (teamList.length == 0) {
             const msg: resFormat = {
                 message: "there is no team in that year",

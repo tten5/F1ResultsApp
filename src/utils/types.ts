@@ -21,15 +21,12 @@ export interface resGetOne extends resFormat{
 
 export interface driverSearchParam {
     driverName: string;
-    ranking: boolean;
 }
 
 export interface teamSearchParam {
     teamName: string;
-    ranking: boolean;
 }
 
 export interface grandprixSearchParam {
     grandprixPlace: string;
-    winners: boolean;
 }

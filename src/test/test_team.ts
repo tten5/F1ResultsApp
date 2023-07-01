@@ -35,7 +35,7 @@ describe('Team API', () => {
     });
 
     describe('GET /teams/year/:year', () => {
-        it('should return all teams in 1 year', async () => {
+        it('should return all teams in 1 year and sort in alphabetical order', async () => {
             const year = 2014
             const response = await requestInstance.get(`/teams/year/${year}`);
             assert.strictEqual(response.status, 200);
@@ -43,6 +43,9 @@ describe('Team API', () => {
             assert.isAbove(response.data.list.length, 0);
             const testParticipation = await requestInstance.get(`/participation/team/${response.data.list[0]._id}/${year}`);
             assert.isAbove(testParticipation.data.list.length, 0);
+            for (let i = 1; i < response.data.list.length; i++) {
+                assert.ok(response.data.list[i].t_name >= response.data.list[i - 1].t_name, 'Grandprix are not in alphabetical order');
+              }
         });
         it('should return 404 if team of invalid year', async () => {
             try {
