@@ -15,11 +15,8 @@ export default {
                 type: "number",
                 example: "2023"
             },
-            date: {
-                type: "string",
-                format: "date-time",
-                example: "2023-06-18T00:00:00.000Z"
-            },
+
+
             GrandPrix: {
                 type: "object",
                 properties: {
@@ -33,7 +30,8 @@ export default {
                         $ref: '#/components/schemas/year'
                     },
                     date: {
-                        $ref: '#/components/schemas/date'
+                        type: "string",
+                        example: "2023-06-18T00:00:00.000Z"
                     },
                 },
             },
@@ -45,10 +43,6 @@ export default {
                 },
             },
             // Driver model
-            name: {
-                type: 'string',
-                example: 'Lewis Hamilton'
-            },
             nationality: {
                 type: 'string',
                 example: 'GBR'
@@ -59,12 +53,18 @@ export default {
                     _id: {
                         $ref: '#/components/schemas/id'
                     },
-                    name: {
-                        $ref: '#/components/schemas/name'
+                    firstname: {
+                        type: 'string',
+                        example: 'Lewis'
+                    },
+                    lastname: {
+                        type: 'string',
+                        example: 'Hamilton'
                     },
                     nationality: {
                         $ref: '#/components/schemas/nationality'
-                    },
+
+                    }
                 },
             },
             DriverList: {
@@ -75,7 +75,7 @@ export default {
                 },
             },
             // Team model
-            t_name: {
+            team_name: {
                 type: 'string',
                 example: 'Mercedes'
             },
@@ -86,7 +86,7 @@ export default {
                         $ref: '#/components/schemas/id'
                     },
                     t_name: {
-                        $ref: '#/components/schemas/t_name'
+                        $ref: '#/components/schemas/team_name'
                     }
                 },
             },
@@ -135,7 +135,6 @@ export default {
                     time: {
                         $ref: '#/components/schemas/time'
                     },
-
                     laps: {
                         $ref: '#/components/schemas/laps'
                     },
@@ -145,14 +144,248 @@ export default {
                     points: {
                         $ref: '#/components/schemas/points'
                     },
+                    real_pts: {
+                        $ref: '#/components/schemas/points'
+                    },
                 },
             },
             ParticipationList: {
-                type: "array", 
+                type: "array",
                 description: "an array of participation",
                 items: {
                     $ref: '#/components/schemas/Participation'
                 },
+            },
+            // Winner model 
+            fullname: {
+                type: 'string',
+                desciption: "driver's fullname",
+                example: "Charles Leclerc"
+            },
+            formatedDate: {
+                type: "string",
+                format: "date-time",
+                example: "Mar 20 2022"
+            },
+            Winner: {
+                type: "object",
+                properties: {
+                    gp_id: {
+                        $ref: '#/components/schemas/id'
+                    },
+                    grandprix: {
+                        type: "string",
+                        example: "Bahrain"
+                    },
+                    date: {
+                        $ref: '#/components/schemas/formatedDate'
+                    },
+                    pos: {
+                        $ref: '#/components/schemas/pos'
+                    },
+                    winner: {
+                        $ref: '#/components/schemas/fullname'
+                    },
+                    team: {
+                        $ref: '#/components/schemas/team_name'
+                    },
+                    time: {
+                        $ref: '#/components/schemas/time'
+                    },
+                    laps: {
+                        $ref: '#/components/schemas/laps'
+                    },
+                },
+            },
+            WinnerList: {
+                type: "array",
+                description: "an array of winnes of grandprix",
+                items: {
+                    $ref: '#/components/schemas/Winner'
+                },
+            },
+            // SumPts model 
+            rank: {
+                type: 'number',
+                description: "the ranking of results",
+                example: 2
+            },
+            percentage: {
+                type: 'string',
+                description: "percentage of one's result over total results",
+                example: "17.25"
+            },
+            SumPts: {
+                type: "object",
+                properties: {
+                    driver_id: {
+                        $ref: '#/components/schemas/id'
+                    },
+                    pos: {
+                        $ref: '#/components/schemas/rank'
+                    },
+                    driver: {
+                        $ref: '#/components/schemas/fullname'
+                    },
+                    nationality: {
+                        $ref: '#/components/schemas/nationality'
+                    },
+                    team: {
+                        $ref: '#/components/schemas/team_name'
+                    },
+                    sumPts: {
+                        $ref: '#/components/schemas/points'
+                    },
+                    percentage: {
+                        $ref: '#/components/schemas/points'
+                    }
+                },
+            },
+            SumPtsList: {
+                type: "array",
+                description: "an array of sum points of drivers",
+                items: {
+                    $ref: '#/components/schemas/SumPts'
+                },
+            },
+            // Driver's all participation in 1 year 
+            DriverAllPar: {
+                type: "array",
+                description: "an array of driver racing result of all grandprix in 1 year",
+                items: {
+                    type: "object",
+                    properties: {
+                        grandprix: {
+                            type: "string",
+                            example: "Bahrain"
+                        },
+                        date: {
+                            $ref: '#/components/schemas/formattedDay'
+                        },
+                        pos: {
+                            $ref: '#/components/schemas/pos'
+                        },
+                        team: {
+                            $ref: '#/components/schemas/team_name'
+                        },
+                        points: {
+                            $ref: '#/components/schemas/points'
+                        },
+                        accumPts: {
+                            $ref: '#/components/schemas/points'
+                        },
+                    },
+                },
+            },
+            DriverAllParResponse: {
+                type: "object",
+                description: "response format",
+                properties: {
+                    target: {
+                        $ref: '#/components/schemas/Driver'
+                    },
+                    list: {
+                        $ref: '#/components/schemas/DriverAllPar'
+                    }
+                }
+            },
+            // Team sum points 
+            TeamSumPts: {
+                type: "object",
+                properties: {
+                    team_id: {
+                        $ref: '#/components/schemas/id'
+                    },
+                    pos: {
+                        $ref: '#/components/schemas/rank'
+                    },
+                    team: {
+                        $ref: '#/components/schemas/team_name'
+                    },
+                    sumPts: {
+                        $ref: '#/components/schemas/points'
+                    },
+                    percentage: {
+                        $ref: '#/components/schemas/points'
+                    }
+                },
+            },
+            TeamSumPtsList: {
+                type: "array",
+                description: "an array of sum points of teams",
+                items: {
+                    $ref: '#/components/schemas/TeamSumPts'
+                },
+            },
+            // Team's all participation
+            TeamAllPart: {
+                "type": "object",
+                "properties": {
+                    "grandprix": {
+                        $ref: '#/components/schemas/place'
+                    },
+                    "date": {
+                        $ref: '#/components/schemas/formattedDate'
+                    },
+                    "sumPts": {
+                        $ref: '#/components/schemas/points'
+                    },
+                    "accumPts": {
+                        $ref: '#/components/schemas/points'
+                    },
+                    "driverInfos": {
+                        type: "array",
+                        description: "array of drivers of a team who participated in this grandprix",
+                        items: {
+                            "type": "object",
+                            "properties": {
+                                "fullname": {
+                                    $ref: '#/components/schemas/fullname'
+                                },
+                                "pos": {
+                                    $ref: '#/components/schemas/pos'
+                                },
+                                "points": {
+                                    $ref: '#/components/schemas/points'
+                                }
+                            }
+
+                        }
+                    }
+                }
+            },
+            DriverContri: {
+                "type": "object",
+                "properties": {
+                    "driverId": {
+                        "type": "string"
+                    },
+                    "driverName": {
+                        "type": "string"
+                    },
+                    "points": {
+                        "type": "number"
+                    }
+                }
+            },
+            TeamAllPartResponse: {
+                type: "object",
+                description: "response format",
+                properties: {
+                    target: {
+                        $ref: '#/components/schemas/Team'
+                    },
+                    list: {
+                        $ref: '#/components/schemas/TeamAllPart'
+                    },
+                    driverPts: {
+                        type: "array", // data type
+                        description: "an array of driver points and their contribution percentage to team total points in that year",
+                        items: {
+                            $ref: '#/components/schemas/DriverContri'
+                        },
+                    }
+                }
             },
             // Error model
             Error: {

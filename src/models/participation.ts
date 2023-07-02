@@ -11,6 +11,7 @@ export interface IParticipation {
     pos: string;
     points: number;
     year: number;
+    real_pts: number;
 }
 
 // Create a Schema corresponding to the document interface.
@@ -31,7 +32,8 @@ const participationSchema = new Schema<IParticipation>({
     laps: { type: Number, required: true },
     pos: { type: String, required: true },
     points: { type: Number, required: true },
-    year: { type: Number, required: true }
+    year: { type: Number, required: true },
+    real_pts: { type: Number, require: true}
 },
     { collection: config.db.participationColl });
 

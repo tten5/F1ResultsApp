@@ -2,9 +2,18 @@ export default {
     // method of operation
     get: {
         tags: ["driver-operations"], 
-        description: "Get all drivers and return in place order", 
-        operationId: "getAllDriver", 
+        description: "Get all driver in 1 year", 
+        operationId: "getAllDriverByYear", 
         parameters: [
+            {
+                name: "year", 
+                in: "path", 
+                schema: {
+                    $ref: "#/components/schemas/year", 
+                },
+                required: true, 
+                description: "the year that the drivers participated in",
+            },
             {
                 name: "sort", 
                 in: "query", 

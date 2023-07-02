@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import requestInstance from './client';
+import { Participation } from '../models/participation';
 
 describe('Driver API', () => {
     describe('GET /drivers', () => {
@@ -9,11 +10,29 @@ describe('Driver API', () => {
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
         });
+        it('should return driver list in firstname order when sort=firstname', async () => {
+            const response = await requestInstance.get(`/drivers?sort=firstname`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            for (let i = 1; i < response.data.list.length; i++) {
+              assert.ok(response.data.list[i].firstname >= response.data.list[i - 1].firstname, 'Driver list is not in firstname order');
+            }
+        });
+        it('should return driver list in lastname order when sort is not firstname', async () => {
+            const response = await requestInstance.get(`/drivers?sort=what`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            for (let i = 1; i < response.data.list.length; i++) {
+              assert.ok(response.data.list[i].lastname >= response.data.list[i - 1].lastname, 'Driver list are not in lastname order');
+            }
+        });
     });
 
     describe('GET /drivers/:id', () => {
         it('should return a specific driver', async () => {
-            const driverId = '649d4ddb61c89321f5d7ebe3';
+            const driverId = '64a0347faa416f5926961dd4';
             const response = await requestInstance.get(`/drivers/${driverId}`);
             assert.strictEqual(response.status, 200);
             assert.strictEqual(response.data.target._id, driverId);
@@ -21,12 +40,81 @@ describe('Driver API', () => {
 
         it('should return 404 if driver not found', async () => {
             try {
-                const nonExistentId = '649d3c55e81209641c7096c3'; // Replace with a non-existent driver id
+                const nonExistentId = '64a0347faa416f5926961dd3'; // Replace with a non-existent driver id
                 await requestInstance.get(`/drivers/${nonExistentId}`);
             }
             catch(err:any) {
                 assert.strictEqual(err.response.status, 404);
                 assert.strictEqual(err.response.data.message, 'driver not found');
+                return
+            }
+            throw `Should throw error but did not`
+        });
+    });
+
+    describe('GET /drivers/year/:year&sort=', () => {
+        it('should return all drivers in 1 year', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/drivers/year/${year}`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            const testParticipation = await requestInstance.get(`/participation/driver/${response.data.list[0]._id}/${year}`);
+            assert.isAbove(testParticipation.data.list.length, 0);
+        });
+        it('should return 404 if driver of invalid year', async () => {
+            try {
+                const response = await requestInstance.get(`/drivers/year/2012`);            
+            }
+            catch (err: any) {
+                assert.strictEqual(err.response.status, 404);
+                assert.strictEqual(err.response.data.message, 'there is no driver in that year');
+                return
+            }
+            throw `Should throw error but did not`
+        });
+        it('should return drivers in 1 year in firstname order when sort=firstname', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/drivers/year/${year}?sort=firstname`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            for (let i = 1; i < response.data.list.length; i++) {
+              assert.ok(response.data.list[i].firstname >= response.data.list[i - 1].firstname, 'Driver list is not in firstname order');
+            }
+        });
+        it('should return drivers in 1 year in lastname order when sort is not firstname', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/drivers/year/${year}?sort=what`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            for (let i = 1; i < response.data.list.length; i++) {
+              assert.ok(response.data.list[i].lastname >= response.data.list[i - 1].lastname, 'Driver list are not in lastname order');
+            }
+        });
+    });
+
+    describe('GET /drivers/year/:year/points', () => {
+        it('should return all drivers sum points in 1 year in rank order', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/drivers/year/${year}/points`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            const testParticipation = await requestInstance.get(`/participation/driver/${response.data.list[0].driver_id}/${year}`);
+            assert.isAbove(testParticipation.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].pos, 1);
+            assert.strictEqual(response.data.list[1].pos, 2);
+            assert.isTrue(response.data.list[0].sumPts > response.data.list[1].sumPts);
+        });
+        it('should return 404 if find sum points of invalid year', async () => {
+            try {
+                const response = await requestInstance.get(`/drivers/year/2012/points`);
+            }
+            catch (err: any) {
+                assert.strictEqual(err.response.status, 404);
+                assert.strictEqual(err.response.data.message, 'no drivers points to be found');
                 return
             }
             throw `Should throw error but did not`

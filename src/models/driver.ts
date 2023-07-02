@@ -3,13 +3,15 @@ import { config } from '../config';
 
 // Create an interface representing a document in MongoDB.
 export interface IDriver {
-    name: string;
+    firstname: string;
+    lastname: string;
     nationality: string;
 }
 
 // Create a Schema corresponding to the document interface.
 const driverSchema = new Schema<IDriver>({
-    name: { type: String, required: true, index: true },
+    firstname: { type: String, required: true, index: true },
+    lastname: { type: String, required: true, index: true },
     nationality: { type: String, required: true }
 },
     { collection: config.db.driversColl });

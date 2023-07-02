@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import requestInstance from './client';
+import { Participation } from '../models/participation';
 
 describe('Participation API', () => {
     describe('GET /participation/grandprix/:id', () => {
@@ -9,6 +10,8 @@ describe('Participation API', () => {
             assert.strictEqual(response.status, 200);
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].gp_id, grandprixId);
+
         });
         it('should return 404 if participation of invalid grand prix', async () => {
             try {
@@ -28,12 +31,15 @@ describe('Participation API', () => {
 
     describe('GET /participation/driver/:id/:year', () => {
         it('should return all participation of 1 driver in 1 year', async () => {
-            const driverId = '649d4ddb61c89321f5d7ebd5'
+            const driverId = '64a0347faa416f5926961dd4'
             const year = 2014
             const response = await requestInstance.get(`/participation/driver/${driverId}/${year}`);
             assert.strictEqual(response.status, 200);
+            assert.strictEqual(response.data.target._id, driverId);
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].date.slice(-4), String(year));
+            assert.isTrue(response.data.list[1].accumPts === response.data.list[0].accumPts + response.data.list[1].points);
         });
         it('should return 404 if participation of invalid driver id with valid year', async () => {
             try {
@@ -63,7 +69,6 @@ describe('Participation API', () => {
     });
 
 
-
     describe('GET /participation/team/:id/:year', () => {
         it('should return all participation of 1 team in 1 year', async () => {
             const teamId = '649d42fb8f9d812c3201f569'
@@ -72,10 +77,15 @@ describe('Participation API', () => {
             assert.strictEqual(response.status, 200);
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
+            assert.exists(response.data.driverPts)
+            assert.exists(response.data.list[0].driverInfos)
+            assert.strictEqual(response.data.target._id, teamId)
+            assert.isTrue(response.data.list[1].accumPts === response.data.list[0].accumPts + response.data.list[1].sumPts);
+            assert.strictEqual(response.data.list[0].date.slice(-4), String(year));
         });
         it('should return 404 if participation of invalid team id with valid year', async () => {
             try {
-                const nonExistentId = '649d794f987b834ba97b0f8a'; // Replace with a non-existent participation id
+                const nonExistentId = '649ff7c71319ba1b46c06852'; // Replace with a non-existent participation id
                 await requestInstance.get(`/participation/team/${nonExistentId}/2014`);
             }
             catch (err: any) {
@@ -104,15 +114,15 @@ describe('Participation API', () => {
 
     describe('GET /participation/:id', () => {
         it('should return a specific participation', async () => {
-            const grandPrixId = '649d794f987b834ba97b0f8a';
-            const response = await requestInstance.get(`/participation/${grandPrixId}`);
+            const participationId = '64a035e966d5ff3b3fcf67e2';
+            const response = await requestInstance.get(`/participation/${participationId}`);
             assert.strictEqual(response.status, 200);
-            assert.strictEqual(response.data.target._id, grandPrixId);
+            assert.strictEqual(response.data.target._id, participationId);
         });
 
         it('should return 404 if participation not found', async () => {
             try {
-                const nonExistentId = '649d3c55e81209641c7096c3'; // Replace with a non-existent participation id
+                const nonExistentId = '64a035e966d5ff3b3fcf67e1'; // Replace with a non-existent participation id
                 await requestInstance.get(`/participation/${nonExistentId}`);
             }
             catch (err: any) {

@@ -3,7 +3,7 @@ export default {
     get: {
         tags: ["participation-operations"], 
         description: "Get all participation by 1 driver in 1 year", 
-        operationId: "getAllParticipationByGP", 
+        operationId: "getAllParticipationByDriver", 
         parameters: [
             {
                 name: "id", 
@@ -32,7 +32,7 @@ export default {
                     // content-type
                     "application/json": {
                         schema: {
-                            $ref: '#/components/schemas/ParticipationList', 
+                            $ref: '#/components/schemas/DriverAllParResponse', 
                         },
                     },
                 },

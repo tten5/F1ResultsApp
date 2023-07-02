@@ -1,35 +1,44 @@
 export default {
     // method of operation
     get: {
-        tags: ["driver-operations"], 
-        description: "Get all drivers and return in place order", 
-        operationId: "getAllDriver", 
+        tags: ["grandprix-operations"], 
+        description: "Get all grandprix's winners in 1 year and return in grandprix's date order", 
+        operationId: "getAllGrandPrixWinnerByYear", 
         parameters: [
             {
-                name: "sort", 
+                name: "year", 
+                in: "path", 
+                schema: {
+                    $ref: "#/components/schemas/year", 
+                },
+                required: true, 
+                description: "the year that the grandprix is held",
+            },
+            {
+                name: "top3", 
                 in: "query", 
                 schema: {
                     type: "string"
                 },
-                description: "default sort is by lastname, indicate sort by alphabet by using sort=firstname",
+                description: "by default show only top 1, to show top3 use top3=true",
             },
         ], 
         // expected responses
         responses: {
             200: {
-                description: "Received all drivers successfully", 
+                description: "Received all grandprix's winners successfully", 
                 content: {
                     // content-type
                     "application/json": {
                         schema: {
-                            $ref: '#/components/schemas/DriverList', 
+                            $ref: '#/components/schemas/WinnerList', 
                         },
                     },
                 },
             },
             // response code
             404: {
-                description: "DriverList not found", // response desc.
+                description: "GrandPrix's winners list not found", // response desc.
                 content: {
                     // content-type
                     "application/json": {

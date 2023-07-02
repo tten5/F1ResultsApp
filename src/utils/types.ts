@@ -4,7 +4,54 @@ import { ITeam } from "../models/team";
 import { IParticipation } from "../models/participation";
 import { IUser } from "../models/user";
 
-type validTarget = IGrandPrix | IDriver | ITeam | IParticipation | IUser
+export interface IWinner { 
+    gp_id: string;
+    grandprix: string;
+    date: string;
+    pos: string;
+    winner: string;
+    team: string;
+    laps: number;
+    time: string;
+}
+
+export interface ISumPts { 
+    driver_id: string;
+    pos: number;
+    driver: string;
+    nationality: string;
+    team: string;
+    sumPts: number;
+    percentage: string;
+}
+
+export interface IDriverParti {
+    grandprix: string;
+    date: string;
+    pos: string;
+    team: string;
+    points: number;
+    accumPts: number;
+}
+
+export interface ITeamSumPts {
+    team_id: string;
+    pos: number; 
+    team: string; 
+    sumPts: number; 
+    percentage: string;
+}
+
+export interface ITeamParti {
+    grandprix: string;
+    date: string;
+    sumPts: number;
+    accumPts: number;
+    driverInfos: driverContri[];
+}
+
+type validTarget = IGrandPrix | IDriver | ITeam | IParticipation
+    | IWinner | ISumPts | IDriverParti | ITeamSumPts | ITeamParti
 
 
 export interface resFormat {
@@ -19,17 +66,30 @@ export interface resGetOne extends resFormat{
     target: validTarget
 }
 
+export interface resGetAllOfOne extends resFormat{
+    target: validTarget;
+    list: validTarget[]
+}
+
+export interface resGetAllOfOneTeam extends resGetAllOfOne{
+    driverPts: driverContri[]
+}
+
 export interface driverSearchParam {
     driverName: string;
-    ranking: boolean;
+    isLastName: boolean; // default is True
 }
 
 export interface teamSearchParam {
     teamName: string;
-    ranking: boolean;
 }
 
 export interface grandprixSearchParam {
     grandprixPlace: string;
-    winners: boolean;
+}
+
+export type driverContri = {
+    fullname: string;
+    pos: string;
+    points: number;
 }

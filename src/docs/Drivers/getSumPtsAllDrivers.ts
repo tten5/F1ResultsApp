@@ -2,34 +2,35 @@ export default {
     // method of operation
     get: {
         tags: ["driver-operations"], 
-        description: "Get all drivers and return in place order", 
-        operationId: "getAllDriver", 
+        description: "Get all drivers' sum points in 1 year and return in ranking order", 
+        operationId: "getAllDriversSumPtsByYear", 
         parameters: [
             {
-                name: "sort", 
-                in: "query", 
+                name: "year", 
+                in: "path", 
                 schema: {
-                    type: "string"
+                    $ref: "#/components/schemas/year", 
                 },
-                description: "default sort is by lastname, indicate sort by alphabet by using sort=firstname",
+                required: true, 
+                description: "the year that the driver participated in",
             },
         ], 
         // expected responses
         responses: {
             200: {
-                description: "Received all drivers successfully", 
+                description: "Received all drivers' sum points successfully", 
                 content: {
                     // content-type
                     "application/json": {
                         schema: {
-                            $ref: '#/components/schemas/DriverList', 
+                            $ref: '#/components/schemas/SumPtsList', 
                         },
                     },
                 },
             },
             // response code
             404: {
-                description: "DriverList not found", // response desc.
+                description: "no drivers points to be found", // response desc.
                 content: {
                     // content-type
                     "application/json": {
