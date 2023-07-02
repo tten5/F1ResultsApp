@@ -79,4 +79,37 @@ describe('Grand Prix API', () => {
             }
         });
     });
+
+    describe('GET /grandprix/year/:year/winners?top', () => {
+        it('should return all grandprix winners in 1 year with only top 1', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/grandprix/year/${year}/winners`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].date.slice(-4), String(year));
+            assert.strictEqual(response.data.list[0].pos, "1")
+            assert.strictEqual(response.data.list[1].pos, "1")
+        });
+        it('should return all grandprix winners in 1 year with top3 when top3=true', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/grandprix/year/${year}/winners?top3=true`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].date.slice(-4), String(year));
+            assert.strictEqual(response.data.list[0].pos, "1")
+            assert.strictEqual(response.data.list[1].pos, "2")
+        });
+        it('should return all grandprix winners in 1 year with only top 1 if top3 not equal to true', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/grandprix/year/${year}/winners?top3=what`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].date.slice(-4), String(year));
+            assert.strictEqual(response.data.list[0].pos, "1")
+            assert.strictEqual(response.data.list[1].pos, "1")
+        });
+    });
 });

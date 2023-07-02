@@ -12,4 +12,18 @@ router.get("/", getTeamsHandler)
 router.get("/year/:year", getTeamsByYearHandler)
 router.get("/:id", getOneTeamHandler)
 
+/**
+ * by year and driver and all -> get /year/:year/points
+ * 
+ * POST to search for driver with user input /search , 
+ * 
+ * yearly ranknig: /:id/yearly-ranking/ 
+ * team's best driver over year /:id/yearly-best-driver
+ * 
+ * 
+ * 
+ * 
+ 
+ */
+
 export default router

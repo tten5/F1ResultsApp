@@ -30,7 +30,7 @@ describe('Participation API', () => {
 
     describe('GET /participation/driver/:id/:year', () => {
         it('should return all participation of 1 driver in 1 year', async () => {
-            const driverId = '649ff5b00a1a8712625a720b'
+            const driverId = '64a0347faa416f5926961dd4'
             const year = 2014
             const response = await requestInstance.get(`/participation/driver/${driverId}/${year}`);
             assert.strictEqual(response.status, 200);
@@ -109,7 +109,7 @@ describe('Participation API', () => {
 
     describe('GET /participation/:id', () => {
         it('should return a specific participation', async () => {
-            const participationId = '649ff7c71319ba1b46c06854';
+            const participationId = '64a035e966d5ff3b3fcf67e2';
             const response = await requestInstance.get(`/participation/${participationId}`);
             assert.strictEqual(response.status, 200);
             assert.strictEqual(response.data.target._id, participationId);
@@ -117,7 +117,7 @@ describe('Participation API', () => {
 
         it('should return 404 if participation not found', async () => {
             try {
-                const nonExistentId = '649d3c55e81209641c7096c3'; // Replace with a non-existent participation id
+                const nonExistentId = '64a035e966d5ff3b3fcf67e1'; // Replace with a non-existent participation id
                 await requestInstance.get(`/participation/${nonExistentId}`);
             }
             catch (err: any) {

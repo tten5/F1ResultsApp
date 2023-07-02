@@ -32,7 +32,7 @@ describe('Driver API', () => {
 
     describe('GET /drivers/:id', () => {
         it('should return a specific driver', async () => {
-            const driverId = '649ff5b00a1a8712625a720b';
+            const driverId = '64a0347faa416f5926961dd4';
             const response = await requestInstance.get(`/drivers/${driverId}`);
             assert.strictEqual(response.status, 200);
             assert.strictEqual(response.data.target._id, driverId);
@@ -40,7 +40,7 @@ describe('Driver API', () => {
 
         it('should return 404 if driver not found', async () => {
             try {
-                const nonExistentId = '649ff5b00a1a8712625a710b'; // Replace with a non-existent driver id
+                const nonExistentId = '64a0347faa416f5926961dd3'; // Replace with a non-existent driver id
                 await requestInstance.get(`/drivers/${nonExistentId}`);
             }
             catch(err:any) {
@@ -92,6 +92,32 @@ describe('Driver API', () => {
             for (let i = 1; i < response.data.list.length; i++) {
               assert.ok(response.data.list[i].lastname >= response.data.list[i - 1].lastname, 'Driver list are not in lastname order');
             }
+        });
+    });
+
+    describe('GET /drivers/year/:year/points', () => {
+        it('should return all drivers sum points in 1 year in rank order', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/drivers/year/${year}/points`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            const testParticipation = await requestInstance.get(`/participation/driver/${response.data.list[0].driver_id}/${year}`);
+            assert.isAbove(testParticipation.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].pos, 1);
+            assert.strictEqual(response.data.list[1].pos, 2);
+            assert.isTrue(response.data.list[0].sumPts > response.data.list[1].sumPts);
+        });
+        it('should return 404 if find sum points of invalid year', async () => {
+            try {
+                const response = await requestInstance.get(`/drivers/year/2012/points`);
+            }
+            catch (err: any) {
+                assert.strictEqual(err.response.status, 404);
+                assert.strictEqual(err.response.data.message, 'there is no driver in that year');
+                return
+            }
+            throw `Should throw error but did not`
         });
     });
 });
