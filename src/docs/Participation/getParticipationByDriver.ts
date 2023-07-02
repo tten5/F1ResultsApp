@@ -32,7 +32,7 @@ export default {
                     // content-type
                     "application/json": {
                         schema: {
-                            $ref: '#/components/schemas/ParticipationList', 
+                            $ref: '#/components/schemas/DriverAllParResponse', 
                         },
                     },
                 },

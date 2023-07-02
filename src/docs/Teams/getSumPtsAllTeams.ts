@@ -1,24 +1,15 @@
 export default {
     // method of operation
     get: {
-        tags: ["participation-operations"], 
-        description: "Get all participation by 1 team in 1 year", 
-        operationId: "getAllParticipationByTeam", 
+        tags: ["team-operations"], 
+        description: "Get all teams' sum points in 1 year and return in ranking order", 
+        operationId: "getAllTeamsSumPtsByYear", 
         parameters: [
-            {
-                name: "id", 
-                in: "path", 
-                schema: {
-                  $ref: "#/components/schemas/id", 
-                },
-                required: true, 
-                description: "team id that want to search",
-            },
             {
                 name: "year", 
                 in: "path", 
                 schema: {
-                  $ref: "#/components/schemas/year", 
+                    $ref: "#/components/schemas/year", 
                 },
                 required: true, 
                 description: "the year that the team participated in",
@@ -27,19 +18,19 @@ export default {
         // expected responses
         responses: {
             200: {
-                description: "Received all participation successfully", 
+                description: "Received all teams' sum points successfully", 
                 content: {
                     // content-type
                     "application/json": {
                         schema: {
-                            $ref: '#/components/schemas/TeamAllPartResponse', 
+                            $ref: '#/components/schemas/SumPtsList', 
                         },
                     },
                 },
             },
             // response code
             404: {
-                description: "ParticipationList not found", // response desc.
+                description: "no teams points to be found", // response desc.
                 content: {
                     // content-type
                     "application/json": {

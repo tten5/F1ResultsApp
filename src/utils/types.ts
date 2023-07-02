@@ -34,8 +34,24 @@ export interface IDriverParti {
     accumPts: number;
 }
 
+export interface ITeamSumPts {
+    team_id: string;
+    pos: number; 
+    team: string; 
+    sumPts: number; 
+    percentage: string;
+}
 
-type validTarget = IGrandPrix | IDriver | ITeam | IParticipation | IWinner | ISumPts | IDriverParti
+export interface ITeamParti {
+    grandprix: string;
+    date: string;
+    sumPts: number;
+    accumPts: number;
+    driverInfos: driverContri[];
+}
+
+type validTarget = IGrandPrix | IDriver | ITeam | IParticipation
+    | IWinner | ISumPts | IDriverParti | ITeamSumPts | ITeamParti
 
 
 export interface resFormat {
@@ -55,6 +71,10 @@ export interface resGetAllOfOne extends resFormat{
     list: validTarget[]
 }
 
+export interface resGetAllOfOneTeam extends resGetAllOfOne{
+    driverPts: driverContri[]
+}
+
 export interface driverSearchParam {
     driverName: string;
     isLastName: boolean; // default is True
@@ -66,4 +86,10 @@ export interface teamSearchParam {
 
 export interface grandprixSearchParam {
     grandprixPlace: string;
+}
+
+export type driverContri = {
+    fullname: string;
+    pos: string;
+    points: number;
 }

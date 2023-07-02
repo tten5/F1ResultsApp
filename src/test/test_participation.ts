@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import requestInstance from './client';
+import { Participation } from '../models/participation';
 
 describe('Participation API', () => {
     describe('GET /participation/grandprix/:id', () => {
@@ -76,8 +77,11 @@ describe('Participation API', () => {
             assert.strictEqual(response.status, 200);
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
-            assert.strictEqual(response.data.list[0].team_id, teamId);
-            assert.strictEqual(response.data.list[0].year, year);
+            assert.exists(response.data.driverPts)
+            assert.exists(response.data.list[0].driverInfos)
+            assert.strictEqual(response.data.target._id, teamId)
+            assert.isTrue(response.data.list[1].accumPts === response.data.list[0].accumPts + response.data.list[1].sumPts);
+            assert.strictEqual(response.data.list[0].date.slice(-4), String(year));
         });
         it('should return 404 if participation of invalid team id with valid year', async () => {
             try {

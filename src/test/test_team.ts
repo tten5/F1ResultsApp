@@ -1,5 +1,4 @@
 import { assert } from 'chai';
-import { Participation } from '../models/participation';
 import requestInstance from './client';
 
 describe('Team API', () => {
@@ -54,6 +53,32 @@ describe('Team API', () => {
             catch (err: any) {
                 assert.strictEqual(err.response.status, 404);
                 assert.strictEqual(err.response.data.message, 'there is no team in that year');
+                return
+            }
+            throw `Should throw error but did not`
+        });
+    });
+
+    describe('GET /teams/year/:year/points', () => {
+        it('should return all teams sum points in 1 year in rank order', async () => {
+            const year = 2014
+            const response = await requestInstance.get(`/teams/year/${year}/points`);
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            const testParticipation = await requestInstance.get(`/participation/team/${response.data.list[0].team_id}/${year}`);
+            assert.isAbove(testParticipation.data.list.length, 0);
+            assert.strictEqual(response.data.list[0].pos, 1);
+            assert.strictEqual(response.data.list[1].pos, 2);
+            assert.isTrue(response.data.list[0].sumPts > response.data.list[1].sumPts);
+        });
+        it('should return 404 if find sum points of invalid year', async () => {
+            try {
+                const response = await requestInstance.get(`/teams/year/2012/points`);
+            }
+            catch (err: any) {
+                assert.strictEqual(err.response.status, 404);
+                assert.strictEqual(err.response.data.message, 'no teams points to be found');
                 return
             }
             throw `Should throw error but did not`

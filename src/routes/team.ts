@@ -2,7 +2,8 @@ import { Router } from "express"
 import {
     getTeamsHandler,
     getOneTeamHandler,
-    getTeamsByYearHandler
+    getTeamsByYearHandler,
+    getSumPtsAllTeamsHandler
 } from "../controllers/team"
 
 const router = Router()
@@ -10,6 +11,7 @@ const router = Router()
 // CRUD 
 router.get("/", getTeamsHandler)
 router.get("/year/:year", getTeamsByYearHandler)
+router.get("/year/:year/points", getSumPtsAllTeamsHandler)
 router.get("/:id", getOneTeamHandler)
 
 /**
