@@ -214,6 +214,7 @@ describe('Driver API', () => {
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
             assert.exists(response.data.list[0].rank)
+            assert.isTrue(response.data.list[1].year > response.data.list[0].year)
         });
 
         it('should return 404 if driver not found', async () => {
@@ -229,5 +230,4 @@ describe('Driver API', () => {
             throw `Should throw error but did not`
         });
     });
-
 });

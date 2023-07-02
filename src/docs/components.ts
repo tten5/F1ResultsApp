@@ -428,6 +428,55 @@ export default {
                     }
                 },
             },
+            // team yearly ranking
+            TeamYearlyRankingList: {
+                type: "array", // data type
+                description: "an array of yearly ranking of a team",
+                items: {
+                    "type": "object",
+                    "properties": {
+                        "rank": {
+                            $ref: '#/components/schemas/rank'
+                        },
+                        "sumPts": {
+                            $ref: '#/components/schemas/points'
+                        },
+                        "rankChanged": {
+                            $ref: '#/components/schemas/rank'
+                        },
+                        "year": {
+                            $ref: '#/components/schemas/year'
+                        }
+                    }
+                },
+            },
+            //
+            TeamYearlyBestDriverList: {
+                type: "array", // data type
+                description: "an array of yearly best driver of a team",
+                items: {
+
+                    "type": "object",
+                    "properties": {
+                        "year": {
+                            $ref: '#/components/schemas/year'
+                        },
+                        "driver": {
+                            $ref: '#/components/schemas/fullname'
+                        },
+                        "sumPts": {
+                            $ref: '#/components/schemas/points'
+                        },
+                        "teamTotalPts": {
+                            $ref: '#/components/schemas/poits'
+                        },
+                        "percentage": {
+                            $ref: '#/components/schemas/percentage'
+                        }
+                    }
+                }
+
+            },
             // Error model
             Error: {
                 type: "object", //data type

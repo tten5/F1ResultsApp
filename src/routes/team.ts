@@ -3,7 +3,9 @@ import {
     getTeamsHandler,
     getOneTeamHandler,
     getTeamsByYearHandler,
-    getSumPtsAllTeamsHandler
+    getSumPtsAllTeamsHandler,
+    getYearlyRankingOfTeamHandler,
+    getYearlyBestDriverHandler
 } from "../controllers/team"
 
 const router = Router()
@@ -13,14 +15,12 @@ router.get("/", getTeamsHandler)
 router.get("/year/:year", getTeamsByYearHandler)
 router.get("/year/:year/points", getSumPtsAllTeamsHandler)
 router.get("/:id", getOneTeamHandler)
+router.get("/:id/yearly-ranking", getYearlyRankingOfTeamHandler)
+router.get("/:id/yearly-best-driver", getYearlyBestDriverHandler)
 
 /**
  * by year and driver and all -> get /year/:year/points
  * 
- * POST to search for driver with user input /search , 
- * 
- * yearly ranknig: /:id/yearly-ranking/ 
- * team's best driver over year /:id/yearly-best-driver
  * 
  * 
  * 
