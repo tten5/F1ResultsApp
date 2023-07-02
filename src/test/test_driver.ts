@@ -114,7 +114,7 @@ describe('Driver API', () => {
             }
             catch (err: any) {
                 assert.strictEqual(err.response.status, 404);
-                assert.strictEqual(err.response.data.message, 'there is no driver in that year');
+                assert.strictEqual(err.response.data.message, 'no drivers points to be found');
                 return
             }
             throw `Should throw error but did not`

@@ -34,10 +34,11 @@ describe('Participation API', () => {
             const year = 2014
             const response = await requestInstance.get(`/participation/driver/${driverId}/${year}`);
             assert.strictEqual(response.status, 200);
+            assert.strictEqual(response.data.target._id, driverId);
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
-            assert.strictEqual(response.data.list[0].driver_id, driverId);
-            assert.strictEqual(response.data.list[0].year, year);
+            assert.strictEqual(response.data.list[0].date.slice(-4), String(year));
+            assert.isTrue(response.data.list[1].accumPts === response.data.list[0].accumPts + response.data.list[1].points);
         });
         it('should return 404 if participation of invalid driver id with valid year', async () => {
             try {

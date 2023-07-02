@@ -25,8 +25,17 @@ export interface ISumPts {
     percentage: string;
 }
 
+export interface IDriverParti {
+    grandprix: string;
+    date: string;
+    pos: string;
+    team: string;
+    points: number;
+    accumPts: number;
+}
 
-type validTarget = IGrandPrix | IDriver | ITeam | IParticipation | IWinner | ISumPts
+
+type validTarget = IGrandPrix | IDriver | ITeam | IParticipation | IWinner | ISumPts | IDriverParti
 
 
 export interface resFormat {
@@ -39,6 +48,11 @@ export interface resGetALL extends resFormat{
 
 export interface resGetOne extends resFormat{
     target: validTarget
+}
+
+export interface resGetAllOfOne extends resFormat{
+    target: validTarget;
+    list: validTarget[]
 }
 
 export interface driverSearchParam {

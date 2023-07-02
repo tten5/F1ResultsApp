@@ -244,6 +244,53 @@ export default {
                     $ref: '#/components/schemas/SumPts'
                 },
             },
+            // Driver's all participation in 1 year 
+            DriverOnePar: {
+                type: "object",
+                properties: {
+                    grandprix: {
+                        type: "string",
+                        example: "Bahrain"
+                    },
+                    date: {
+                        type: "string",
+                        format: "date-time",
+                        example: "Mar 20 2022"
+                    },
+                    pos: {
+                        $ref: '#/components/schemas/pos'
+                    },
+                    
+                    team: {
+                        $ref: '#/components/schemas/team_name'
+                    },
+                    points: {
+                        $ref: '#/components/schemas/points'
+                    },
+                    accumPts: {
+                        $ref: '#/components/schemas/points'
+                    },
+                },
+            },
+            DriverAllPar: {
+                type: "array", 
+                description: "an array of driver racing result of all grandprix in 1 year",
+                items: {
+                    $ref: '#/components/schemas/DriverOnePar'
+                },
+            },
+            DriverAllParResponse: {
+                type: "object", 
+                description: "response format",
+                properties: {
+                    target: {
+                        $ref: '#/components/schemas/Driver'
+                    },
+                    list: {
+                        $ref: '#/components/schemas/DriverOnePar'
+                    }
+                }
+            },
             // Error model
             Error: {
                 type: "object", //data type
