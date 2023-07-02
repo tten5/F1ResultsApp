@@ -64,14 +64,25 @@ export interface IDriverYearlyRanking extends IYearlyRanking {
 export interface ITeamYearlyBestDriver { 
     year: number;
     driver: string;
+    nationality: string;
     sumPts: number;
     teamTotalPts: number;
     percentage: string;
 }
 
+export interface IGPYearlyWinners {
+    year: string;
+    pos: string;
+    driver: string; 
+    nationality: string; 
+    team: string; 
+    time: string;   
+}
+
 type validTarget = IGrandPrix | IDriver | ITeam | IParticipation
     | IWinner | ISumPts | IDriverParti | ITeamSumPts | ITeamParti
     | IDriverYearlyRanking | IYearlyRanking | ITeamYearlyBestDriver
+    | IGPYearlyWinners
 
 
 export interface resFormat {
@@ -93,6 +104,11 @@ export interface resGetAllOfOne extends resFormat{
 
 export interface resGetAllOfOneTeam extends resGetAllOfOne{
     driverPts: driverContri[]
+}
+
+export interface resGetALLOfOneGPPlace extends resFormat{
+    target: string;
+    list: validTarget[];
 }
 
 export interface driverSearchParam {

@@ -464,6 +464,9 @@ export default {
                         "driver": {
                             $ref: '#/components/schemas/fullname'
                         },
+                        "nationality": {
+                            $ref: '#/components/schemas/nationality'
+                        },
                         "sumPts": {
                             $ref: '#/components/schemas/points'
                         },
@@ -475,8 +478,44 @@ export default {
                         }
                     }
                 }
-
             },
+            PlacesList: {
+                type: "array",
+                description: "an array of grandprix places",
+                items: {
+                    $ref: '#/components/schemas/place'
+                },
+            },
+            // GPYearlyWinner
+            GPYearlyWinnerList: {
+                type: "array",
+                description: "an array of yearly winner of 1 grandprix place",
+                items: {
+                    type: "object",
+                    properties: {
+                        "year": {
+                            $ref: '#/components/schemas/year'
+                        },
+                        "pos": {
+                            $ref: '#/components/schemas/pos'
+                        },
+                        "driver": {
+                            $ref: '#/components/schemas/fullname'
+                        },
+                        "nationality": {
+                            $ref: '#/components/schemas/nationality'
+                        },
+                        "team": {
+                            $ref: '#/components/schemas/team_name'
+                        },
+                        "time": {
+                            $ref: '#/components/schemas/time'
+                        }
+                    }
+                }
+
+            }
+
             // Error model
             Error: {
                 type: "object", //data type
