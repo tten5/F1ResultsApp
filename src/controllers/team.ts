@@ -1,8 +1,9 @@
 import { Team } from "../models/team";
 import { Participation } from "../models/participation";
 import { Request, Response } from "express";
-import { resFormat, resGetALL, resGetOne } from "../utils/types";
+import { resFormat, resGetALL, resGetOne, resGetAllOfOne } from "../utils/types";
 import { config } from "../config";
+import { Types } from "mongoose";
 
 /**
  * get all teams
@@ -159,6 +160,180 @@ export const getSumPtsAllTeamsHandler = async (req: Request, res: Response) => {
         console.log("get all teams' sum points error")
         console.log(err)
         const msg: resFormat = { message: "get all teams' sum points fail" }
+        return res.status(500).json(msg)
+    }
+}
+
+
+/**
+ * get yearly ranking 1 team  
+ */
+export const getYearlyRankingOfTeamHandler = async (req: Request, res: Response) => {
+    try {
+        const team = await Team.findById(req.params.id)
+        if (!team) {
+            const msg: resFormat = {
+                message: "team not found",
+            }
+            return res.status(404).json(msg)
+        }
+        // take all year 
+        const yearStart = config.db.yearStart
+        const yearEnd = config.db.yearEnd
+
+        let yearlyRanking = []
+        let currentRank = 0
+
+        for (let year = yearStart; year <= yearEnd; year++) {
+            const sumPts = await Participation.aggregate([
+                {
+                    $match: {
+                        year: year
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$team_id',
+                        sumPoints: { $sum: '$real_pts' },
+                    }
+                },
+                {
+                    $setWindowFields: {
+                        partitionBy: "$state",
+                        sortBy: { sumPoints: -1 },
+                        output: {
+                            rankOrder: {
+                                $rank: {}
+                            }
+                        }
+                    }
+                },
+                {
+                    $match: {
+                        _id: new Types.ObjectId(req.params.id)
+                    }
+                },
+            ])
+            if (sumPts.length == 0) {
+                const msg: resFormat = {
+                    message: "no teams points to be found",
+                }
+                return res.status(404).json(msg)
+            }
+
+            let rankChanged: number;
+            if (year == yearStart) {
+                rankChanged = 0
+            } else {
+                rankChanged = - (sumPts[0].rankOrder - currentRank)
+            }
+         
+            yearlyRanking.push({
+                rank: sumPts[0].rankOrder,
+                sumPts: sumPts[0].sumPoints,
+                rankChanged: rankChanged,
+                year: year
+            })
+            currentRank = sumPts[0].rankOrder
+        }
+        
+        const msg: resGetAllOfOne = {
+            message: "successfully get team yearly ranking",
+            target: team,
+            list: yearlyRanking
+        }
+
+        return res.status(200).json(msg)
+    }
+    catch (err) {
+        console.log("get team yearly ranking error")
+        console.log(err)
+        const msg: resFormat = { message: "get team yearly ranking fail" }
+        return res.status(500).json(msg)
+    }
+}
+
+
+/**
+ * get yearly ranking 1 team  
+ */
+export const getYearlyBestDriverHandler = async (req: Request, res: Response) => {
+    try {
+        const team = await Team.findById(req.params.id)
+        if (!team) {
+            const msg: resFormat = {
+                message: "team not found",
+            }
+            return res.status(404).json(msg)
+        }
+        // take all year 
+        const yearStart = config.db.yearStart
+        const yearEnd = config.db.yearEnd
+
+        let yearlyRanking = []
+        let currentRank = 0
+
+        for (let year = yearStart; year <= yearEnd; year++) {
+            const sumPts = await Participation.aggregate([
+                {
+                    $match: {
+                        year: year,
+                        team_id: new Types.ObjectId(req.params.id)
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$driver_id',
+                        sumPoints: { $sum: '$real_pts' },
+                    }
+                },
+                {
+                    $lookup: {
+                        from: config.db.driversColl,
+                        localField: '_id',
+                        foreignField: '_id',
+                        as: 'driver'
+                    }
+                },
+                {
+                    $sort: 
+                        { sumPoints: -1 }
+                },
+            ])
+            if (sumPts.length == 0) {
+                const msg: resFormat = {
+                    message: "no teams participation to be found",
+                }
+                return res.status(404).json(msg)
+            }
+
+            let totalSumPts = 0.0
+            for (let i = 0; i < sumPts.length; i++) {
+                totalSumPts += sumPts[i].sumPoints
+            }
+
+         
+            yearlyRanking.push({
+                year: year,
+                driver: `${sumPts[0].driver[0].firstname} ${sumPts[0].driver[0].lastname}`,
+                sumPts: sumPts[0].sumPoints,
+                teamTotalPts: totalSumPts,
+                percentage: ((sumPts[0].sumPoints / totalSumPts) * 100).toFixed(2)
+            })
+        }
+        
+        const msg: resGetAllOfOne = {
+            message: "successfully get team yearly best driver",
+            target: team,
+            list: yearlyRanking
+        }
+
+        return res.status(200).json(msg)
+    }
+    catch (err) {
+        console.log("get team yearly ranking error")
+        console.log(err)
+        const msg: resFormat = { message: "get team yearly best driver fail" }
         return res.status(500).json(msg)
     }
 }

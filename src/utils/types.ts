@@ -50,17 +50,28 @@ export interface ITeamParti {
     driverInfos: driverContri[];
 }
 
-export interface IDriverYearlyRanking {
+export interface IYearlyRanking {
     rank: number;	
-    team: string; 
     sumPts: number;	
     rankChanged: number;
     year: number;
 }
 
+export interface IDriverYearlyRanking extends IYearlyRanking {
+    team: string; 
+}
+
+export interface ITeamYearlyBestDriver { 
+    year: number;
+    driver: string;
+    sumPts: number;
+    teamTotalPts: number;
+    percentage: string;
+}
+
 type validTarget = IGrandPrix | IDriver | ITeam | IParticipation
     | IWinner | ISumPts | IDriverParti | ITeamSumPts | ITeamParti
-    | IDriverYearlyRanking
+    | IDriverYearlyRanking | IYearlyRanking | ITeamYearlyBestDriver
 
 
 export interface resFormat {

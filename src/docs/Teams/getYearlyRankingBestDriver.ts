@@ -1,9 +1,9 @@
 export default {
     // method of operation
     get: {
-        tags: ["driver-operations"], 
-        description: "Get yearly ranking of a driver", 
-        operationId: "getYearlyRankingOfDriver", 
+        tags: ["team-operations"], 
+        description: "Get yearly best driver of a team", 
+        operationId: "getYearlyRankingOfTeam", 
         parameters: [
             {
                 name: "id", 
@@ -11,26 +11,26 @@ export default {
                 schema: {
                     type: "string"
                 },
-                description: "id of driver",
+                description: "id of team",
                 required: true
             },
         ], 
         // expected responses
         responses: {
             200: {
-                description: "Received yearly ranking of driver successfully", 
+                description: "Received yearly best driver of team successfully", 
                 content: {
                     // content-type
                     "application/json": {
                         schema: {
-                            $ref: '#/components/schemas/DriverYearlyRankingList', 
+                            $ref: '#/components/schemas/TeamYearlyBestDriverList', 
                         },
                     },
                 },
             },
             // response code
             404: {
-                description: "driver not found", // response desc.
+                description: "team not found", // response desc.
                 content: {
                     // content-type
                     "application/json": {

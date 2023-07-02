@@ -83,5 +83,61 @@ describe('Team API', () => {
             }
             throw `Should throw error but did not`
         });
+
+   
+
+        
+    });
+
+    describe('GET /teams/:id/yearly-ranking', () => {
+        it('should return list of yearly ranking of a team', async () => {
+            const teamId = '649d42fb8f9d812c3201f569';
+            const response = await requestInstance.get(`/teams/${teamId}/yearly-ranking`);
+            assert.strictEqual(response.status, 200);
+            assert.strictEqual(response.data.target._id, teamId);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            assert.exists(response.data.list[0].rank)
+            assert.isTrue(response.data.list[1].year > response.data.list[0].year)
+        });
+
+        it('should return 404 if team not found', async () => {
+            try {
+                const nonExistentId = '64a0347faa416f5926961dd3'; // Replace with a non-existent team id
+                await requestInstance.get(`/teams/${nonExistentId}/yearly-ranking`);
+            }
+            catch (err: any) {
+                assert.strictEqual(err.response.status, 404);
+                assert.strictEqual(err.response.data.message, 'team not found');
+                return
+            }
+            throw `Should throw error but did not`
+        });
+    });
+
+    describe('GET /teams/:id/yearly-best-driver', () => {
+        it('should return list of yearly best-driver of a team', async () => {
+            const teamId = '649d42fb8f9d812c3201f569';
+            const response = await requestInstance.get(`/teams/${teamId}/yearly-best-driver`);
+            assert.strictEqual(response.status, 200);
+            assert.strictEqual(response.data.target._id, teamId);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            assert.exists(response.data.list[0].driver)
+            assert.isTrue(response.data.list[1].year > response.data.list[0].year)
+        });
+
+        it('should return 404 if team not found', async () => {
+            try {
+                const nonExistentId = '64a0347faa416f5926961dd3'; // Replace with a non-existent team id
+                await requestInstance.get(`/teams/${nonExistentId}/yearly-best-driver`);
+            }
+            catch (err: any) {
+                assert.strictEqual(err.response.status, 404);
+                assert.strictEqual(err.response.data.message, 'team not found');
+                return
+            }
+            throw `Should throw error but did not`
+        });
     });
 });
