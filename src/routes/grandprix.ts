@@ -3,7 +3,9 @@ import {
     getAllGPHandler,
     getOneGPHandler,
     getGPByYearHandler,
-    getWinnersAllGPHandler
+    getWinnersAllGPHandler,
+    getAllGPPlacesHandler,
+    getYearlyWinnersOfGPHandler
 } from '../controllers/grandprix'
 
 const router = Router()
@@ -12,12 +14,14 @@ const router = Router()
 router.get("/", getAllGPHandler)
 router.get("/year/:year", getGPByYearHandler)
 router.get("/year/:year/winners", getWinnersAllGPHandler)
+router.get("/places", getAllGPPlacesHandler)
+router.get("/place/:place/yearly-winners", getYearlyWinnersOfGPHandler)
 router.get("/:id", getOneGPHandler)
+
+
 
 /*
 search by place: get /places/ -> return all places 
-
-POST to search for place with user input /search
 
 yearly winner of gp from 1 place: /:id/yearly-winners&top3=true
 

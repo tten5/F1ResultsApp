@@ -255,7 +255,7 @@ export const getYearlyRankingOfTeamHandler = async (req: Request, res: Response)
 
 
 /**
- * get yearly ranking 1 team  
+ * get yearly best driver of 1 team  
  */
 export const getYearlyBestDriverHandler = async (req: Request, res: Response) => {
     try {
@@ -270,8 +270,7 @@ export const getYearlyBestDriverHandler = async (req: Request, res: Response) =>
         const yearStart = config.db.yearStart
         const yearEnd = config.db.yearEnd
 
-        let yearlyRanking = []
-        let currentRank = 0
+        let yearlyBestDriver = []
 
         for (let year = yearStart; year <= yearEnd; year++) {
             const sumPts = await Participation.aggregate([
@@ -313,9 +312,10 @@ export const getYearlyBestDriverHandler = async (req: Request, res: Response) =>
             }
 
          
-            yearlyRanking.push({
+            yearlyBestDriver.push({
                 year: year,
                 driver: `${sumPts[0].driver[0].firstname} ${sumPts[0].driver[0].lastname}`,
+                nationality: sumPts[0].driver[0].nationality,
                 sumPts: sumPts[0].sumPoints,
                 teamTotalPts: totalSumPts,
                 percentage: ((sumPts[0].sumPoints / totalSumPts) * 100).toFixed(2)
@@ -325,7 +325,7 @@ export const getYearlyBestDriverHandler = async (req: Request, res: Response) =>
         const msg: resGetAllOfOne = {
             message: "successfully get team yearly best driver",
             target: team,
-            list: yearlyRanking
+            list: yearlyBestDriver
         }
 
         return res.status(200).json(msg)

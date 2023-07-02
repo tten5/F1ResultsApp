@@ -112,4 +112,38 @@ describe('Grand Prix API', () => {
             assert.strictEqual(response.data.list[1].pos, "1")
         });
     });
+    describe('GET /grandprix/places', () => {
+        it('should return all grand prix places', async () => {
+            const response = await requestInstance.get('/grandprix/places');
+            assert.strictEqual(response.status, 200);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+        });
+    });
+
+    describe('GET /grandprix/place/:place/yearly-winners', () => {
+        it('should return list of yearly winners of a place', async () => {
+            const grandprixPlace = 'Canada';
+            const response = await requestInstance.get(`/grandprix/place/${grandprixPlace}/yearly-winners`);
+            assert.strictEqual(response.status, 200);
+            assert.strictEqual(response.data.target, grandprixPlace);
+            assert.isArray(response.data.list);
+            assert.isAbove(response.data.list.length, 0);
+            assert.isTrue(response.data.list[1].pos > response.data.list[0].pos)
+            assert.isTrue(response.data.list[3].year > response.data.list[0].year)
+        });
+
+        it('should return 404 if grandprix place not found', async () => {
+            try {
+                const grandprixPlace = 'what';
+                await requestInstance.get(`/grandprix/place/${grandprixPlace}/yearly-winners`);
+            }
+            catch (err: any) {
+                assert.strictEqual(err.response.status, 404);
+                assert.strictEqual(err.response.data.message, 'grandprix place not found');
+                return
+            }
+            throw `Should throw error but did not`
+        });
+    });
 });
