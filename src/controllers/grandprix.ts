@@ -135,7 +135,7 @@ export const getWinnersAllGPHandler = async (req: Request, res: Response) => {
             const winnerFirstname = winners[i].driver[0].firstname
             const winnerLastname = winners[i].driver[0].lastname
             const formattedDate = winners[i].grandprix[0].date.
-                toLocaleDateString('en-US', options).replace(',', '');;
+                toLocaleDateString('en-US', options).replace(',', '');
 
             winnersOutput.push({
                 gp_id: winners[i].grandprix[0]._id,

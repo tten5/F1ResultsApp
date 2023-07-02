@@ -1,8 +1,9 @@
 import { Driver, IDriver } from "../models/driver";
 import { Participation } from "../models/participation";
 import { Request, Response } from "express";
-import { resFormat, resGetALL, resGetOne } from "../utils/types";
+import { resFormat, resGetALL, resGetAllOfOne, resGetOne } from "../utils/types";
 import { config } from "../config";
+import { Types } from "mongoose";
 
 /**
  * get all drivers and return in alphabetical order
@@ -185,6 +186,149 @@ export const getSumPtsAllDriversHandler = async (req: Request, res: Response) =>
         console.log("get all drivers' sum points error")
         console.log(err)
         const msg: resFormat = { message: "get all drivers' sum points fail" }
+        return res.status(500).json(msg)
+    }
+}
+
+/**
+ * get all drivers by their name
+ */
+export const searchDriversByNameHandler = async (req: Request, res: Response) => {
+    try {
+        let driverList: IDriver[]
+        if (!req.body.driverName) {
+            const msg: resFormat = {
+                message: "please provide driver name",
+            }
+            return res.status(400).json(msg)
+        }
+
+        if (req.body.isLastName) {
+            driverList = await Driver.find({lastname: req.body.driverName})
+        } else {
+            driverList = await Driver.find({firstname: req.body.driverName})
+        }
+        if (driverList.length == 0) {
+            const msg: resFormat = {
+                message: "cannot find driver with such name",
+            }
+            return res.status(404).json(msg)
+        }
+
+        const msg: resGetALL = {
+            message: "successfully get driver(s) by name",
+            list: driverList
+        }
+
+        return res.status(200).json(msg)
+    }
+    catch (err) {
+        console.log("get driver(s) by name error")
+        console.log(err)
+        const msg: resFormat = { message: "get driver(s) by name fail" }
+        return res.status(500).json(msg)
+    }
+}
+
+
+/**
+ * get yearly ranking 1 driver  
+ */
+export const getYearlyRankingOfDriverHandler = async (req: Request, res: Response) => {
+    try {
+        const driver = await Driver.findById(req.params.id)
+        if (!driver) {
+            const msg: resFormat = {
+                message: "driver not found",
+            }
+            return res.status(404).json(msg)
+        }
+        // take all year 
+        const yearStart = config.db.yearStart
+        const yearEnd = config.db.yearEnd
+
+        let yearlyRanking = []
+        let currentRank = 0
+
+        for (let year = yearStart; year <= yearEnd; year++) {
+            const sumPts = await Participation.aggregate([
+                {
+                    $match: {
+                        year: year
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$driver_id',
+                        sumPoints: { $sum: '$real_pts' },
+                        team_id: {
+                            $addToSet: {
+                                team_id: '$team_id'
+                            }
+                        } // to find team
+                    }
+                },
+                {
+                    $lookup: {
+                        from: config.db.teamsColl,
+                        localField: 'team_id.team_id',
+                        foreignField: '_id',
+                        as: 'team'
+                    }
+                },
+                {
+                    $setWindowFields: {
+                        partitionBy: "$state",
+                        sortBy: { sumPoints: -1 },
+                        output: {
+                            rankOrder: {
+                                $rank: {}
+                            }
+                        }
+                    }
+                },
+                {
+                    $match: {
+                        _id: new Types.ObjectId(req.params.id)
+                    }
+                },
+            ])
+            if (sumPts.length == 0) {
+                const msg: resFormat = {
+                    message: "no drivers points to be found",
+                }
+                return res.status(404).json(msg)
+            }
+
+            let rankChanged: number;
+            if (year == yearStart) {
+                rankChanged = 0
+            } else {
+                rankChanged = - (sumPts[0].rankOrder - currentRank)
+            }
+         
+            yearlyRanking.push({
+                rank: sumPts[0].rankOrder,
+                team: sumPts[0].team[0].t_name,
+                sumPts: sumPts[0].sumPoints,
+                rankChanged: rankChanged,
+                year: year
+            })
+            currentRank = sumPts[0].rankOrder
+        }
+        
+        const msg: resGetAllOfOne = {
+            message: "successfully get driver yearly ranking",
+            target: driver,
+            list: yearlyRanking
+        }
+
+        return res.status(200).json(msg)
+    }
+    catch (err) {
+        console.log("get driver yearly ranking error")
+        console.log(err)
+        const msg: resFormat = { message: "get driver yearly ranking fail" }
         return res.status(500).json(msg)
     }
 }

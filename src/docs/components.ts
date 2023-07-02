@@ -47,6 +47,10 @@ export default {
                 type: 'string',
                 example: 'GBR'
             },
+            lastname: {
+                type: 'string',
+                example: 'Hamilton'
+            },
             Driver: {
                 type: "object",
                 properties: {
@@ -58,12 +62,10 @@ export default {
                         example: 'Lewis'
                     },
                     lastname: {
-                        type: 'string',
-                        example: 'Hamilton'
+                        $ref: '#/components/schemas/lastname'
                     },
                     nationality: {
                         $ref: '#/components/schemas/nationality'
-
                     }
                 },
             },
@@ -72,6 +74,20 @@ export default {
                 description: "an array of drivers",
                 items: {
                     $ref: '#/components/schemas/Driver'
+                },
+            },
+            DriverInput: {
+                type: "object", // data type
+                description: "request to find driver by name",
+                properties: {
+                    driverName: {
+                        $ref: '#/components/schemas/lastname'
+                    },
+                    isLastName: {
+                        type: "boolean",
+                        description: "search by lastname or not",
+                        default: true
+                    }
                 },
             },
             // Team model
@@ -162,7 +178,7 @@ export default {
                 desciption: "driver's fullname",
                 example: "Charles Leclerc"
             },
-            formatedDate: {
+            formattedDate: {
                 type: "string",
                 format: "date-time",
                 example: "Mar 20 2022"
@@ -178,7 +194,7 @@ export default {
                         example: "Bahrain"
                     },
                     date: {
-                        $ref: '#/components/schemas/formatedDate'
+                        $ref: '#/components/schemas/formattedDate'
                     },
                     pos: {
                         $ref: '#/components/schemas/pos'
@@ -386,6 +402,31 @@ export default {
                         },
                     }
                 }
+            },
+            // diver yearly ranking
+            DriverYearlyRankingList: {
+                type: "array", // data type
+                description: "an array of yearly ranking of a driver",
+                items: {
+                    "type": "object",
+                    "properties": {
+                        "rank": {
+                            $ref: '#/components/schemas/rank'
+                        },
+                        "team": {
+                            $ref: '#/components/schemas/team_name'
+                        },
+                        "sumPts": {
+                            $ref: '#/components/schemas/points'
+                        },
+                        "rankChanged": {
+                            $ref: '#/components/schemas/rank'
+                        },
+                        "year": {
+                            $ref: '#/components/schemas/year'
+                        }
+                    }
+                },
             },
             // Error model
             Error: {
