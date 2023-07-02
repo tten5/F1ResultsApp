@@ -10,6 +10,8 @@ type dbConfigType = {
     driversColl: string;
     participationColl: string;
     teamsColl: string;
+    yearStart: number;
+    yearEnd: number;
 }
 
 type serverConfigType = {
@@ -29,6 +31,8 @@ export const config : configType = {
         driversColl: "drivers",
         participationColl: "participation",
         teamsColl: "teams",
+        yearStart: 2014,
+        yearEnd: 2023
     },
     server: {
         port: SERVER_PORT
