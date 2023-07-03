@@ -513,9 +513,7 @@ export default {
                         }
                     }
                 }
-
-            }
-
+            },
             // Error model
             Error: {
                 type: "object", //data type
