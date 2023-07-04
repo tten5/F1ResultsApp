@@ -2,7 +2,6 @@ import { IGrandPrix } from "../models/grandprix";
 import { IDriver } from "../models/driver";
 import { ITeam } from "../models/team";
 import { IParticipation } from "../models/participation";
-import { IUser } from "../models/user";
 
 export interface IWinner { 
     gp_id: string;
