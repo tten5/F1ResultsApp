@@ -26,7 +26,7 @@ export default function DriverSelect(props: any) {
 					setData(response.data.list)
 				}
 			} catch (error) {
-				console.error('Error fetching races:', error);
+				console.error('Error fetching drivers:', error);
 			}
 		};
 

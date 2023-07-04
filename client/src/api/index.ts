@@ -16,7 +16,7 @@ export function getYearlyWinnersOfOneGPPlaceUrl(place: string) {
 }
 
 // Driver API
-export function getAllDriversUrl(year: string, sort:string) {
+export function getAllDriversUrl(sort:string) {
     return `/drivers?sort=${sort}`
 }
 
@@ -37,6 +37,10 @@ export function getYearlyRakingOfOneDriverUrl(id: string) {
 }
 
 // Team API
+export function getAllTeamsUrl() {
+    return `/teams`
+}
+
 export function getTeamsInOneYearUrl(year: string) {
     return `/teams/year/${year}`
 }

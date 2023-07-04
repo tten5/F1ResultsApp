@@ -17,11 +17,11 @@ export default function DriverNameSelect(props: any) {
 		const fetchDrivers = async () => {
 			try {
 				if (props.sort === 'firstname') {
-					const response = await requestInstance.get(getAllDriversUrl(props.year, 'firstname'))
+					const response = await requestInstance.get(getAllDriversUrl('firstname'))
 					setData(response.data.list)
 				} 
 				else {
-					const response = await requestInstance.get(getAllDriversUrl(props.year, ''))
+					const response = await requestInstance.get(getAllDriversUrl(''))
 					setData(response.data.list)
 				}
 			} catch (error) {

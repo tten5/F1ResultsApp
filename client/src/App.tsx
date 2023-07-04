@@ -13,6 +13,8 @@ import DriverNameSelect from './components/DriverNameSelect';
 import DriverInputSelect from './components/DriverInputSelect';
 import DriverNameText from './components/DriverNameText';
 import YearlySelect from './components/YearlySelect';
+import TeamNameSelect from './components/TeamNameSelect';
+import GPPlaceSelect from './components/GPPlaceSelect';
 
 function App() {
 	const [category, setCategory] = React.useState('');
@@ -24,6 +26,7 @@ function App() {
 		setDriver('')
 		setTeam('')
 		setSort('')
+		setPlace('')
 	};
 
 	const [year, setYear] = React.useState('');
@@ -97,6 +100,12 @@ function App() {
 		setYearly(newValue);
 	};
 
+	const [place, setPlace] = React.useState('');
+	const handleSetPlace = (newValue: string) => {
+		setPlace(newValue);
+		setYearly('')
+	};
+
 	return (
 		<div className="App">
 			<header className="App-header">
@@ -144,7 +153,6 @@ function App() {
 					setValue={handleSetDriver} value={driver}
 					sort={sort}
 					setOneTarget={handleSetOneTarget} /> : <></>}
-			
 			{category === 'driver' && criteria == 'Text' ?
 				<DriverNameText 
 					setValue={handleSetDriver} value={driver} 
@@ -156,6 +164,30 @@ function App() {
 					setColumns={handleSetColumns} columns={columns}
 					setRows={handleSetRows} rows={rows} /> : <></>}
 			{category === 'driver' && driver != '' && yearly != '' ? <ResultTable key={criteria+driver} columns={columns} rows={rows} oneTarget={oneTarget}/> : <></>}
+
+			{category === 'team' ?
+				<TeamNameSelect 
+					setValue={handleSetTeam} value={team}
+					setOneTarget={handleSetOneTarget} /> : <></>}
+			{category === 'team' && team != '' ?
+				<YearlySelect key={criteria} category={category}
+					setValue={handleSetYearly} value={yearly}
+					target={team}
+					setColumns={handleSetColumns} columns={columns}
+					setRows={handleSetRows} rows={rows} /> : <></>}
+			{category === 'team' && team != '' && yearly != '' ? <ResultTable key={yearly+team} columns={columns} rows={rows} oneTarget={oneTarget}/> : <></>}
+
+			{category === 'grandprix' ?
+				<GPPlaceSelect 
+					setValue={handleSetPlace} value={place}
+					/> : <></>}
+			{category === 'grandprix' && place != '' ?
+				<YearlySelect key={criteria} category={category}
+					setValue={handleSetYearly} value={yearly}
+					target={place}
+					setColumns={handleSetColumns} columns={columns}
+					setRows={handleSetRows} rows={rows} /> : <></>}
+			{category === 'grandprix' && place != '' && yearly != '' ? <ResultTable key={yearly+place} columns={columns} rows={rows} oneTarget={oneTarget}/> : <></>}
 
 
 		</div>

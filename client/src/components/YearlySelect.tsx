@@ -6,7 +6,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {
 	getYearlyBestDriverOfOneTeamUrl,
 	getYearlyRakingOfOneDriverUrl,
-	getYearlyRakingOfOneTeamUrl
+	getYearlyRakingOfOneTeamUrl,
+	getYearlyWinnersOfOneGPPlaceUrl
 } from '../api';
 import { IDriver, resGetALL, validTarget } from '../utils/types';
 import requestInstance from '../api/requestInstance';
@@ -23,12 +24,22 @@ export default function YearlySelect(props: any) {
 		else if (props.category === 'team' && yearly === 'yearly-ranking') {
 			fetchData(props, "team-yearly-ranking", getYearlyRakingOfOneTeamUrl(props.target));
 		}
+		else if (props.category === 'team' && yearly === 'yearly-best-driver') {
+			fetchData(props, "team-yearly-best-driver", getYearlyBestDriverOfOneTeamUrl(props.target));
+		}
+		else if (props.category === 'grandprix' && yearly === 'yearly-winners') {
+			fetchData(props, "grandprix-yearly-winners", getYearlyWinnersOfOneGPPlaceUrl(props.target));
+		}
 	};
 
 	let list : any[] = []
 	if (props.category == "driver") {
 		list = ["yearly-ranking"]
-	}
+	} else if (props.category == "team") {
+		list = ["yearly-ranking", "yearly-best-driver"]
+	} else if (props.category == "grandprix") {
+		list = ["yearly-winners"]
+	} 
 
 	return (
 		<FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -76,11 +87,30 @@ const fetchData = async (props: any, type: string, url: string) => {
 		}
 		else if (type === 'team-yearly-ranking') {
 			for (let i = 0; i < keyList.length; i++) {
-				let minWidth = 150
+				let minWidth = 10
 
-				if (keyList[i] == "pos" || keyList[i] == "laps" || keyList[i] == "points") {
-					minWidth = 50
-				}
+				columns.push({
+					id: keyList[i],
+					label: keyList[i].toLocaleUpperCase(),
+					minWidth: minWidth
+				})
+			}
+		}
+		else if (type === 'team-yearly-best-driver') {
+			for (let i = 0; i < keyList.length; i++) {
+				let minWidth = 10
+
+				columns.push({
+					id: keyList[i],
+					label: keyList[i].toLocaleUpperCase(),
+					minWidth: minWidth
+				})
+			}
+		}
+		else if (type === 'grandprix-yearly-winners') {
+			for (let i = 0; i < keyList.length; i++) {
+				let minWidth = 10
+
 				columns.push({
 					id: keyList[i],
 					label: keyList[i].toLocaleUpperCase(),
