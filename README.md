@@ -50,7 +50,7 @@ npm install
     npm run start 
     ```
 
-# Apps feature
+# App features
 
 - Documentation is provided at `http://localhost:8000/api-docs/`
     - Developer can get all APIs of the app as well as each API request and response format 
