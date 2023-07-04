@@ -95,6 +95,6 @@ const fetchData = async (props: any, type: string, url: string) => {
 		}
 	
 	} catch (error) {
-		console.error('Error fetching races:', error);
+		console.error('Error fetching teams:', error);
 	}
 };

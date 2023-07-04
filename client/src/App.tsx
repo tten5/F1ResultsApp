@@ -9,11 +9,21 @@ import ResultTable from './components/ResultTable';
 import DriverSelect from './components/DriverSelect';
 import TeamSelect from './components/TeamSelect';
 import CollapsibleTable from './components/CollapsibleTable';
+import DriverNameSelect from './components/DriverNameSelect';
+import DriverInputSelect from './components/DriverInputSelect';
+import DriverNameText from './components/DriverNameText';
+import YearlySelect from './components/YearlySelect';
 
 function App() {
 	const [category, setCategory] = React.useState('');
 	const handleSetCategory = (newValue: string) => {
 		setCategory(newValue);
+		setYear('');
+		setCriteria('')
+		setRace('')
+		setDriver('')
+		setTeam('')
+		setSort('')
 	};
 
 	const [year, setYear] = React.useState('');
@@ -31,21 +41,31 @@ function App() {
 		setRace('')
 		setDriver('')
 		setTeam('')
+		setSort('')
 	};
 
 	const [race, setRace] = React.useState('');
 	const handleSetRace = (newValue: string) => {
 		setRace(newValue);
+		setDriver('')
+		setTeam('')
+		setYearly('')
 	};
 	
 	const [driver, setDriver] = React.useState('');
 	const handleSetDriver = (newValue: string) => {
 		setDriver(newValue);
+		setRace('')
+		setTeam('')
+		setYearly('')
 	};
 
 	const [team, setTeam] = React.useState('');
 	const handleSetTeam = (newValue: string) => {
 		setTeam(newValue);
+		setDriver('')
+		setRace('')
+		setYearly('')
 	};
 
 	const [sort, setSort] = React.useState('');
@@ -72,12 +92,18 @@ function App() {
 		setOneTarget(newValue);
 	};
 
+	const [yearly, setYearly] = useState('');
+	const handleSetYearly = (newValue : any) => {
+		setYearly(newValue);
+	};
+
 	return (
 		<div className="App">
 			<header className="App-header">
 				<h1> F1 Result App</h1>
 				<p>
 					An app to show F1 races results
+					Data's last update is 
 				</p>
 
 			</header>
@@ -110,8 +136,27 @@ function App() {
 			{category === 'year' && year != '' && criteria === 'Drivers' && driver != '' ? <ResultTable columns={columns} rows={rows} oneTarget={oneTarget}/> : <></>}
 			{category === 'year' && year != '' && criteria === 'Teams' && team == 'All' ? <ResultTable columns={columns} rows={rows} oneTarget={oneTarget}/> : <></>}
 			{category === 'year' && year != '' && criteria === 'Teams' && team != '' && team != 'All' ? <CollapsibleTable rows={teamPtsRows} oneTarget={oneTarget}/> : <></>}
+			
+			{category === 'driver' ?
+				<DriverInputSelect setValue={handleSetCriteria} value={criteria} setSort={handleSetSort} /> : <></>}
+			{category === 'driver' && criteria == 'List' ?
+				<DriverNameSelect key={sort}
+					setValue={handleSetDriver} value={driver}
+					sort={sort}
+					setOneTarget={handleSetOneTarget} /> : <></>}
+			
+			{category === 'driver' && criteria == 'Text' ?
+				<DriverNameText 
+					setValue={handleSetDriver} value={driver} 
+					setOneTarget={handleSetOneTarget} /> : <></>}
+			{category === 'driver' && criteria != '' && driver != '' ?
+				<YearlySelect key={criteria} category={category}
+					setValue={handleSetYearly} value={yearly}
+					target={driver}
+					setColumns={handleSetColumns} columns={columns}
+					setRows={handleSetRows} rows={rows} /> : <></>}
+			{category === 'driver' && driver != '' && yearly != '' ? <ResultTable key={criteria+driver} columns={columns} rows={rows} oneTarget={oneTarget}/> : <></>}
 
-		
 
 		</div>
 	);

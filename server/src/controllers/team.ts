@@ -215,26 +215,30 @@ export const getYearlyRankingOfTeamHandler = async (req: Request, res: Response)
                 },
             ])
             if (sumPts.length == 0) {
-                const msg: resFormat = {
-                    message: "no teams points to be found",
-                }
-                return res.status(404).json(msg)
+                continue // the team did not participate in that year
             }
 
             let rankChanged: number;
-            if (year == yearStart) {
-                rankChanged = 0
+            if (yearlyRanking.length==0) {
+                rankChanged = 0 // first record of rank
             } else {
                 rankChanged = - (sumPts[0].rankOrder - currentRank)
             }
          
             yearlyRanking.push({
-                rank: sumPts[0].rankOrder,
+                year: year,
                 sumPts: sumPts[0].sumPoints,
+                rank: sumPts[0].rankOrder,
                 rankChanged: rankChanged,
-                year: year
             })
             currentRank = sumPts[0].rankOrder
+        }
+
+        if (yearlyRanking.length === 0) {
+            const msg: resFormat = {
+                message: "no drivers points to be found",
+            }
+            return res.status(404).json(msg)
         }
         
         const msg: resGetAllOfOne = {

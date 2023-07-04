@@ -112,6 +112,6 @@ const fetchData = async (props: any, type: string, url: string) => {
 		props.setColumns(columns)
 			props.setRows(data.list)
 	} catch (error) {
-		console.error('Error fetching races:', error);
+		console.error('Error fetching drivers:', error);
 	}
 };

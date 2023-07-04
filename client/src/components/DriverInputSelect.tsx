@@ -6,7 +6,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-export default function CriteriaSelect(props: any) {
+export default function DriverInputSelect(props: any) {
 	const [currentVal, setCurrentVal] = useState('');
 	const [checked, setChecked] = useState(false);
 
@@ -19,10 +19,7 @@ export default function CriteriaSelect(props: any) {
 	const handleSetChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
 		
 		if (!checked) {
-			if (currentVal == "Races") {
-				props.setSort('place')
-			} 
-			else if (currentVal == "Drivers") {
+			if (currentVal == "List") {
 				props.setSort('firstname')
 			}
 		} else {
@@ -32,16 +29,16 @@ export default function CriteriaSelect(props: any) {
 		setChecked(event.target.checked)
 	}
 
-	let list = ["Races", "Drivers", "Teams"]
+	let list = ["List", "Text"]
 
 	return (
-		<FormControl sx={{ m: 1, minWidth: 120 }}>
-			<InputLabel id="criteria-select-label">Criteria</InputLabel>
+		<FormControl sx={{ m: 1, minWidth: 150 }}>
+			<InputLabel id="driver-input-select-label">Input Method</InputLabel>
 			<Select
-				labelId="criteria-select-label"
-				id="criteria-select"
+				labelId="driver-input-select-label"
+				id="driver-input-select"
 				value={props.value}
-				label="Criteria"
+				label="Input Method"
 				onChange={handleChange}
 			>
 				{list.map((item, index) => (
@@ -49,8 +46,7 @@ export default function CriteriaSelect(props: any) {
 				))}
 
 			</Select>
-		{currentVal == 'Races' ? <FormControlLabel control={<Checkbox onChange={handleSetChecked} />} label="Sort RaceList by place" /> : <></>}
-		{currentVal == 'Drivers' ? <FormControlLabel control={<Checkbox onChange={handleSetChecked} />} label="Sort DriverList by firstname" /> : <></>}
+		{currentVal == 'List' ? <FormControlLabel control={<Checkbox onChange={handleSetChecked} />} label="Sort DriverList by firstname" /> : <></>}
 
 		</FormControl>
 
