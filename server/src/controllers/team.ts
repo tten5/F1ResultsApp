@@ -304,10 +304,7 @@ export const getYearlyBestDriverHandler = async (req: Request, res: Response) =>
                 },
             ])
             if (sumPts.length == 0) {
-                const msg: resFormat = {
-                    message: "no teams participation to be found",
-                }
-                return res.status(404).json(msg)
+                continue
             }
 
             let totalSumPts = 0.0
@@ -324,6 +321,13 @@ export const getYearlyBestDriverHandler = async (req: Request, res: Response) =>
                 teamTotalPts: totalSumPts,
                 percentage: ((sumPts[0].sumPoints / totalSumPts) * 100).toFixed(2)
             })
+        }
+
+        if (yearlyBestDriver.length === 0) {
+            const msg: resFormat = {
+                message: "no teams participation to be found",
+            }
+            return res.status(404).json(msg)
         }
         
         const msg: resGetAllOfOne = {

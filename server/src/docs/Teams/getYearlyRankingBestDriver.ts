@@ -3,7 +3,7 @@ export default {
     get: {
         tags: ["team-operations"], 
         description: "Get yearly best driver of a team", 
-        operationId: "getYearlyRankingOfTeam", 
+        operationId: "getYearlyBestDriverOfTeam", 
         parameters: [
             {
                 name: "id", 
