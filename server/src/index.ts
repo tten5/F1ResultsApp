@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { config } from "./config";
 import path from "path"; 
@@ -24,6 +24,11 @@ mongoose.connection.once("open", () => {
 
 app.use(express.json()) // body parser
 app.use(express.static(path.join(__dirname, '../../client/build'))) // public DIR
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+	res.header("Access-Control-Allow-Origin", "*");
+	next()
+})
 
 // set up routes
 app.get('/', function (req: Request, res: Response) {
