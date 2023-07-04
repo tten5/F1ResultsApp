@@ -18,12 +18,12 @@ export default {
         // expected responses
         responses: {
             200: {
-                description: "Received all participation successfully", 
+                description: "Received all participation of 1 grandprix successfully", 
                 content: {
                     // content-type
                     "application/json": {
                         schema: {
-                            $ref: '#/components/schemas/ParticipationList', 
+                            $ref: '#/components/schemas/GPAllPartResponse', 
                         },
                     },
                 },

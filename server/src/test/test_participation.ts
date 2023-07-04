@@ -10,7 +10,7 @@ describe('Participation API', () => {
             assert.strictEqual(response.status, 200);
             assert.isArray(response.data.list);
             assert.isAbove(response.data.list.length, 0);
-            assert.strictEqual(response.data.list[0].gp_id, grandprixId);
+            assert.strictEqual(response.data.target._id, grandprixId);
 
         });
         it('should return 404 if participation of invalid grand prix', async () => {
@@ -20,7 +20,7 @@ describe('Participation API', () => {
             }
             catch (err: any) {
                 assert.strictEqual(err.response.status, 404);
-                assert.strictEqual(err.response.data.message, 'there is no participation of such grand prix');
+                assert.strictEqual(err.response.data.message, 'no grandprix found');
                 return
             }
             throw `Should throw error but did not`
@@ -48,7 +48,7 @@ describe('Participation API', () => {
             }
             catch (err: any) {
                 assert.strictEqual(err.response.status, 404);
-                assert.strictEqual(err.response.data.message, 'there is no participation of such driver in that year');
+                assert.strictEqual(err.response.data.message, 'no driver found');
                 return
             }
             throw `Should throw error but did not`
@@ -61,7 +61,7 @@ describe('Participation API', () => {
             }
             catch (err: any) {
                 assert.strictEqual(err.response.status, 404);
-                assert.strictEqual(err.response.data.message, 'there is no participation of such driver in that year');
+                assert.strictEqual(err.response.data.message, 'no driver found');
                 return
             }
             throw `Should throw error but did not`

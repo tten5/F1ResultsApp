@@ -80,7 +80,7 @@ describe('Grand Prix API', () => {
         });
     });
 
-    describe('GET /grandprix/year/:year/winners?top', () => {
+    describe('GET /grandprix/year/:year/winners?top3', () => {
         it('should return all grandprix winners in 1 year with only top 1', async () => {
             const year = 2014
             const response = await requestInstance.get(`/grandprix/year/${year}/winners`);

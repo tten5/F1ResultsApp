@@ -1,8 +1,36 @@
-import { IGrandPrix } from "../models/grandprix";
-import { IDriver } from "../models/driver";
-import { ITeam } from "../models/team";
-import { IParticipation } from "../models/participation";
-import { IUser } from "../models/user";
+import { Types } from 'mongoose';
+
+export interface IDriver {
+    _id: Types.ObjectId;
+    firstname: string;
+    lastname: string;
+    nationality: string;
+}
+export interface IGrandPrix {
+    _id: Types.ObjectId;
+    place: string;
+    year: number;
+    date: Date;
+}
+
+export interface ITeam {
+    _id: Types.ObjectId;
+    t_name: string;
+}
+
+export interface IParticipation {
+    _id: Types.ObjectId;
+    gp_id: Types.ObjectId;
+    driver_id: Types.ObjectId;
+    team_id: Types.ObjectId;
+    time: string;
+    laps: number;
+    pos: string;
+    points: number;
+    year: number;
+    real_pts: number;
+}
+
 
 export interface IWinner { 
     gp_id: string;
@@ -24,7 +52,6 @@ export interface ISumPts {
     sumPts: number;
     percentage: string;
 }
-
 export interface IGPParti {
     pos: string;
     driver: string;
@@ -88,7 +115,7 @@ export interface IGPYearlyWinners {
     time: string;   
 }
 
-type validTarget = IGrandPrix | IDriver | ITeam | IParticipation
+export type validTarget = IGrandPrix | IDriver | ITeam | IParticipation
     | IWinner | ISumPts | IDriverParti | ITeamSumPts | ITeamParti
     | IDriverYearlyRanking | IYearlyRanking | ITeamYearlyBestDriver
     | IGPYearlyWinners | IGPParti

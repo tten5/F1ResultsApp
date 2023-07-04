@@ -1,5 +1,6 @@
 import { Participation } from "../models/participation";
 import { Driver } from "../models/driver";
+import { GrandPrix } from "../models/grandprix";
 import { Team } from "../models/team";
 import { Request, Response } from "express";
 import {
@@ -18,17 +19,66 @@ import { Types } from "mongoose"
  */
 export const getParticipationsByGPHandler = async (req: Request, res: Response) => {
     try {
-        const participationList = await Participation.find({ gp_id: req.params.id })
+        const grandprix = await GrandPrix.findById(req.params.id)
+        if (!grandprix) {
+            const msg: resFormat = {
+                message: "no grandprix found",
+            }
+            return res.status(404).json(msg)
+        }
+        const participationList = await Participation.aggregate([
+            {
+                $match: {
+                    gp_id: new Types.ObjectId(req.params.id),
+                }
+            },
+            {
+                $lookup: {
+                    from: config.db.driversColl,
+                    localField: 'driver_id',
+                    foreignField: '_id',
+                    as: 'driver'
+                }
+            },
+            {
+                $lookup: {
+                    from: config.db.teamsColl,
+                    localField: 'team_id',
+                    foreignField: '_id',
+                    as: 'team'
+                }
+            },
+        ])
+
+
         if (participationList.length == 0) {
             const msg: resFormat = {
-                message: "there is no participation of such grand prix",
+                message: "there is no participation of such grandprix",
             }
             return res.status(404).json(msg)
         }
 
-        const msg: resGetALL = {
-            message: "successfully get all participation of 1 grand prix",
-            list: participationList
+        let participationOutput = []
+        
+        for (let i = 0; i < participationList.length; i++) {
+            const driverFirstname = participationList[i].driver[0].firstname
+            const driverLastname = participationList[i].driver[0].lastname
+
+            participationOutput.push({
+                pos: participationList[i].pos,
+                driver: `${driverFirstname} ${driverLastname}`,
+                team: participationList[i].team[0].t_name,
+                laps: participationList[i].laps,
+                time: participationList[i].time,
+                points: participationList[i].points,
+            })
+        }
+
+
+        const msg: resGetAllOfOne = {
+            message: "successfully get all participation of 1 driver in 1 year",
+            target: grandprix,
+            list: participationOutput
         }
 
         return res.status(200).json(msg)
@@ -51,7 +101,7 @@ export const getParticipationsByDriverHandler = async (req: Request, res: Respon
         const driver = await Driver.findById(req.params.id)
         if (!driver) {
             const msg: resFormat = {
-                message: "there is no participation of such driver in that year",
+                message: "no driver found",
             }
             return res.status(404).json(msg)
         }

@@ -373,14 +373,17 @@ export default {
             DriverContri: {
                 "type": "object",
                 "properties": {
-                    "driverId": {
-                        "type": "string"
+                    _id: {
+                        $ref: '#/components/schemas/id'
                     },
-                    "driverName": {
-                        "type": "string"
+                    sumPoints: {
+                        $ref: '#/components/schemas/points'
                     },
-                    "points": {
-                        "type": "number"
+                    driver: {
+                        $ref: '#/components/schemas/Driver'
+                    },
+                    percentage: {
+                        $ref: '#/components/schemas/points'
                     }
                 }
             },
@@ -401,6 +404,46 @@ export default {
                             $ref: '#/components/schemas/DriverContri'
                         },
                     }
+                }
+            },
+            // All participation of 1 grandprix
+            GPPartiList: {
+                type: "array",
+                description: "All participation of 1 grand prix",
+                items: {
+                    type: "object",
+                    "properties": {
+                        pos: {
+                            $ref: '#/components/schemas/pos'
+                        },
+                        driver: {
+                            $ref: '#/components/schemas/fullname'
+                        },
+                        team: {
+                            $ref: '#/components/schemas/team_name'
+                        },
+                        laps: {
+                            $ref: '#/components/schemas/laps'
+                        },
+                        time: {
+                            $ref: '#/components/schemas/time'
+                        },
+                        points: {
+                            $ref: '#/components/schemas/points'
+                        }
+                    }
+                }
+            },
+            GPAllPartResponse: {
+                type: "object",
+                description: "response format",
+                properties: {
+                    target: {
+                        $ref: '#/components/schemas/GrandPrix'
+                    },
+                    list: {
+                        $ref: '#/components/schemas/GPPartiList'
+                    },       
                 }
             },
             // diver yearly ranking
@@ -471,7 +514,7 @@ export default {
                             $ref: '#/components/schemas/points'
                         },
                         "teamTotalPts": {
-                            $ref: '#/components/schemas/poits'
+                            $ref: '#/components/schemas/points'
                         },
                         "percentage": {
                             $ref: '#/components/schemas/percentage'
@@ -513,9 +556,7 @@ export default {
                         }
                     }
                 }
-
-            }
-
+            },
             // Error model
             Error: {
                 type: "object", //data type
