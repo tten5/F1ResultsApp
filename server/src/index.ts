@@ -23,9 +23,13 @@ mongoose.connection.once("open", () => {
 })
 
 app.use(express.json()) // body parser
-app.use(express.static(path.join(__dirname, 'src/frontend/public'))) // public DIR
+app.use(express.static(path.join(__dirname, '../../client/build'))) // public DIR
 
 // set up routes
+app.get('/', function (req: Request, res: Response) {
+	res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
+});
+
 app.get("/healthcheck", (req: Request, res: Response) => {
 	res.send("F1 results app is working normally");
 });

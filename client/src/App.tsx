@@ -109,10 +109,11 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<h1> F1 Result App</h1>
+				<h1> F1 Results App</h1>
 				<p>
-					An app to show F1 races results
-					Data's last update is 
+					An app to show F1 race results.
+					<br></br>
+					The data was last updated on June 28, 2023.
 				</p>
 
 			</header>
@@ -170,7 +171,7 @@ function App() {
 					setValue={handleSetTeam} value={team}
 					setOneTarget={handleSetOneTarget} /> : <></>}
 			{category === 'team' && team != '' ?
-				<YearlySelect key={criteria} category={category}
+				<YearlySelect key={team} category={category}
 					setValue={handleSetYearly} value={yearly}
 					target={team}
 					setColumns={handleSetColumns} columns={columns}
