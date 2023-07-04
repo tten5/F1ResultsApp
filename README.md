@@ -1,6 +1,8 @@
 # F1ResultsApp
 - Web application to show results from F1 races
-- Data is crawled from `formula1.com`
+- Data is crawled from https://www.formula1.com
+- Demo: https://f1-results-app.onrender.com/
+- Teachstack: Nodejs, Express, TypeScript, MongoDB (using Mongoose), Swagger (auto documentation), Mocha and Chai (unittest), basic Reactj
 
 ## Prerequisite
 - Node.js v18.16.1 
@@ -53,11 +55,11 @@ npm install
 - Documentation is provided at `http://localhost:8000/api-docs/`
     - Developer can get all APIs of the app as well as each API request and response format 
     - Also allow to quickly test each API during development      
-- Teams with different names are treated as different team 
+- Teams with different names are treated as different teams 
 - Data models are described in `server/src/models`
 - Data is from 2014 to 28-June-2023
 
-- In overall the API allow to search by 4 categories:
+- In overall the APIs allow to search by 4 categories:
     - By year
     - By driver 
     - By team 
@@ -83,7 +85,7 @@ npm install
     - All team 
         - Show team `points`
         - Show the percentage of each team's points in total points 
-    - One team 
+    - 1 team 
       - Show `accumulativePoints` after each race in the year  
       - At each grandprix we show the `participation` of that `team's member` in that grandprix. So that we can see who the members are and how much points they contributed to team's points
       - Also return a list containing percentage of each member's sum points in team's total points
@@ -110,6 +112,13 @@ npm install
 ### By grandprix place 
 + Search by place, for example Canada  
 - Yearly top 3 winners of grandprix from 1 place
+
+# Examples 
+- The app
+![image](https://github.com/tten5/F1ResultsApp/assets/71060912/09928eec-c2d1-4571-8107-da277ee29848)
+
+- The docs
+<img width="404" alt="swagger-auto-docs" src="https://github.com/tten5/F1ResultsApp/assets/71060912/7c1b3ddd-6d16-4fd0-86fe-146a14a311c2">
 
 
 
