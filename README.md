@@ -1,6 +1,6 @@
 # F1ResultsApp
 - Web application to show results from F1 races
-- Data is crawled from https://www.formula1.com
+- Data is crawled from https://www.formula1.com using Python
 - Demo: https://f1-results-app.onrender.com/
 - Teachstack: Nodejs, Express, TypeScript, MongoDB (using Mongoose), Swagger (auto documentation), Mocha and Chai (unittest), basic Reactj
 
